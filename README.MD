@@ -21,9 +21,8 @@ Before you begin, ensure you have the following installed:
 
 1.  **Clone the Repository**
     ```bash
-    git clone https://github.com/your-username/leap-of-death.git
+    git clone https://github.com/vladd-6/ProiectUnity.git
     ```
-    *Replace the URL with the actual link to your Git repository.*
 
 2.  **Open the Project in Unity**
     *   Open **Unity Hub**.
@@ -32,7 +31,7 @@ Before you begin, ensure you have the following installed:
 
 3.  **Open a Scene**
     *   Once the project is loaded, navigate to the `Scenes` folder in the Project window (usually `Assets/Scenes`).
-    *   Double-click on the main scene (e.g., `Main.unity` or `Level_01.unity`) to open it.
+    *   Double-click on the main scene to open it.
 
 4.  **Press Play**
     *   Click the **Play** button at the top of the Unity Editor to start the game in the preview mode.
