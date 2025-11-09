@@ -487,12 +487,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 4
-  sprintIncrease: 2
-  rotateSpeed: 120
+  sprintSpeed: 8
+  playerCamera: {fileID: 330585545}
+  mouseSensitivity: 2
+  lookXLimit: 85
   jumpForce: 4
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  groundCheckDistance: 0.6
+  maxStamina: 100
+  staminaDrainRate: 25
+  staminaRegenRate: 15
 --- !u!136 &1135450039
 CapsuleCollider:
   m_ObjectHideFlags: 0
