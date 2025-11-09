@@ -17,17 +17,11 @@ public class PlayerController : MonoBehaviour
     public LayerMask groundLayer;
     public float groundCheckDistance = 0.6f;
 
-    [Header("Stamina Settings")]
-    public float maxStamina = 100.0f;
-    public float staminaDrainRate = 25.0f;
-    public float staminaRegenRate = 15.0f;
-
     private Rigidbody rb;
     private bool isGrounded;
     private float verticalInput;
     private float horizontalInput;
     private bool isSprinting;
-    private float currentStamina;
     private float rotationX = 0;
 
     void Start()
@@ -35,8 +29,6 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         rb.linearDamping = 0.1f; // drag
-
-        currentStamina = maxStamina;
 
         // lock and hide cursor
         Cursor.lockState = CursorLockMode.Locked;
@@ -66,24 +58,17 @@ public class PlayerController : MonoBehaviour
         bool isTryingToMove = horizontalInput != 0 || verticalInput != 0;
         bool isTryingToSprint = Input.GetKey(KeyCode.LeftShift);
 
-        if (isTryingToMove && isTryingToSprint && currentStamina > 0)
+        if (isTryingToMove && isTryingToSprint)
         {
-            isSprinting = true;
-            currentStamina -= staminaDrainRate * Time.deltaTime; // drain with set rate
+            isSprinting = true; 
         }
         else
         {
             isSprinting = false;
-            if (currentStamina < maxStamina)
-            {
-                currentStamina += staminaRegenRate * Time.deltaTime; // regen with set rate
-            }
         }
-        // clamp stamina ( 0 <= stamina <= max )
-        currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
 
-        // mouse look up / down
-        rotationX += -Input.GetAxis("Mouse Y") * mouseSensitivity;
+            // mouse look up / down
+            rotationX += -Input.GetAxis("Mouse Y") * mouseSensitivity;
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         if (playerCamera != null)
         {
