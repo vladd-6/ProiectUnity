@@ -18,12 +18,14 @@ public class PlayerController : MonoBehaviour
     [Header("Jumping Settings")]
     public float jumpForce = 7.0f;
     public float gravity = -19.62f;
+    // How quickly the player can change horizontal velocity while airborne (higher = more control)
+    public float airControl = 2f;
 
     [Header("Wall Running Settings")]
     public float wallRunSpeed = 10f;
     public float wallRunUpwardForce = 3f;
-    public float wallRunCameraTilt = 25f;
-    public float wallRunTiltSpeed = 2f;
+    public float wallRunCameraTilt = 40f;
+    public float wallRunTiltSpeed = 5f;
     public float minWallRunSpeed = 4f;
     public float wallRunDuration = 2f;
 
@@ -44,6 +46,10 @@ public class PlayerController : MonoBehaviour
     private float horizontalSpeed;
     private Vector3 wallRunDirection;
     private float wallRunTimer;
+    // Remember last wall we ran on so we don't immediately re-start on the same wall
+    private GameObject lastWallObject = null;
+    // Set to true when player touches ground since the last wall run
+    private bool touchedGroundSinceWallRun = true;
 
     private enum WallRunSide
     {
@@ -129,6 +135,8 @@ public class PlayerController : MonoBehaviour
             {
                 StopWallRun();
             }
+            // mark we've touched ground (allows re-using same wall later)
+            touchedGroundSinceWallRun = true;
         }
 
         // Get input (only used when not wall running)
@@ -142,18 +150,30 @@ public class PlayerController : MonoBehaviour
             playerVelocity = wallRunDirection * wallRunSpeed;
             playerVelocity.y = Mathf.MoveTowards(playerVelocity.y, -2f, Time.deltaTime * 3f);
         }
-        else
-        {
-            // Normal movement
-            bool isTryingToMove = horizontalInput != 0 || verticalInput != 0;
-            bool isTryingToSprint = Input.GetKey(KeyCode.LeftShift);
-            isSprinting = isTryingToMove && isTryingToSprint;
+            else
+            {
+                // Normal movement
+                bool isTryingToMove = horizontalInput != 0 || verticalInput != 0;
+                bool isTryingToSprint = Input.GetKey(KeyCode.LeftShift);
+                isSprinting = isTryingToMove && isTryingToSprint;
 
-            float currentSpeed = isSprinting ? sprintSpeed : moveSpeed;
-            Vector3 moveDirection = (transform.forward * verticalInput + transform.right * horizontalInput).normalized * currentSpeed;
-            playerVelocity.x = moveDirection.x;
-            playerVelocity.z = moveDirection.z;
-        }
+                float currentSpeed = isSprinting ? sprintSpeed : moveSpeed;
+                Vector3 moveDirection = (transform.forward * verticalInput + transform.right * horizontalInput).normalized * currentSpeed;
+
+                // If grounded, directly set horizontal velocity. If airborne, lerp towards desired horizontal
+                // velocity so we don't instantly wipe momentum (preserve inertia from wall-jump).
+                if (isGrounded)
+                {
+                    playerVelocity.x = moveDirection.x;
+                    playerVelocity.z = moveDirection.z;
+                }
+                else
+                {
+                    float t = airControl * Time.deltaTime;
+                    playerVelocity.x = Mathf.Lerp(playerVelocity.x, moveDirection.x, t);
+                    playerVelocity.z = Mathf.Lerp(playerVelocity.z, moveDirection.z, t);
+                }
+            }
 
         // Handle jumping
         if (Input.GetKeyDown(KeyCode.Space))
@@ -164,19 +184,22 @@ public class PlayerController : MonoBehaviour
             }
             else if (isWallRunning)
             {
-                // Wall jump - push away from wall
-                Vector3 wallJumpForce = Vector3.zero;
+                // Wall jump - preserve horizontal inertia and add outward/upward impulse
+                Vector3 horizontalVel = new Vector3(playerVelocity.x, 0f, playerVelocity.z);
+                Vector3 outwardDir = Vector3.zero;
 
                 if (currentWallSide == WallRunSide.Right)
                 {
-                    wallJumpForce = (Vector3.up * jumpForce) + (-transform.right * 8f);
+                    outwardDir = -transform.right;
                 }
                 else if (currentWallSide == WallRunSide.Left)
                 {
-                    wallJumpForce = (Vector3.up * jumpForce) + (transform.right * 8f);
+                    outwardDir = transform.right;
                 }
 
-                playerVelocity = wallJumpForce;
+                const float outwardStrength = 12f;
+                playerVelocity = horizontalVel + outwardDir * outwardStrength;
+                playerVelocity.y = jumpForce;
                 StopWallRun();
             }
         }
@@ -208,6 +231,11 @@ public class PlayerController : MonoBehaviour
 
             if (currentHorizontalSpeed >= minWallRunSpeed)
             {
+                // Prevent starting a wall run on the same wall unless we've touched ground
+                if (!touchedGroundSinceWallRun && lastWallObject == hit.gameObject)
+                {
+                    return;
+                }
                 StartWallRun(hit);
             }
         }
@@ -241,6 +269,10 @@ public class PlayerController : MonoBehaviour
 
         // Give initial upward boost
         playerVelocity.y = wallRunUpwardForce;
+
+        // Record which wall we started on and clear the 'touched ground' flag
+        lastWallObject = hit.gameObject;
+        touchedGroundSinceWallRun = false;
     }
 
     private void StopWallRun()
