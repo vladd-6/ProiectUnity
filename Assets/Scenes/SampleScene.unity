@@ -471,6 +471,15 @@ MonoBehaviour:
   lookXLimit: 85
   jumpForce: 7
   gravity: -19.62
+  wallRunSpeed: 10
+  wallRunUpwardForce: 3
+  wallRunCameraTilt: 5
+  wallRunTiltSpeed: 2
+  minWallRunSpeed: 4
+  wallRunDuration: 2
+  ground:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!23 &1135450040
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -692,7 +701,7 @@ GameObject:
   - component: {fileID: 2118130382}
   - component: {fileID: 2118130381}
   - component: {fileID: 2118130380}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
