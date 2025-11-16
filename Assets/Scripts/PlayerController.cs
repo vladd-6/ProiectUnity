@@ -15,11 +15,18 @@ public class PlayerController : MonoBehaviour
     public float mouseSensitivity = 2.0f;
     public float lookXLimit = 85.0f;
 
+    [Header("Headbob Settings")]
+    public float walkBobbingSpeed = 14f;
+    public float sprintBobbingSpeed = 18f;
+    public float bobbingAmount = 0.05f;
+    public float cameraYMidpoint = 0f;
+
     [Header("Jumping Settings")]
     public float jumpForce = 7.0f;
     public float gravity = -19.62f;
+
     // How quickly the player can change horizontal velocity while airborne (higher = more control)
-    public float airControl = 2f;
+    public float airControl = 5f;
 
     [Header("Wall Running Settings")]
     public float wallRunSpeed = 10f;
@@ -38,6 +45,7 @@ public class PlayerController : MonoBehaviour
     private bool isSprinting;
     private float rotationX = 0;
     private float currentCameraTilt = 0f;
+    private float headbobTimer = 0f;
 
     private bool canWallRun = true;
     private bool isWallRunning = false;
@@ -63,6 +71,12 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        // Store initial camera Y position as midpoint
+        if (playerCamera != null)
+        {
+            cameraYMidpoint = playerCamera.transform.localPosition.y;
+        }
     }
 
     void Update()
@@ -70,6 +84,7 @@ public class PlayerController : MonoBehaviour
         PlayerMovement();
         CameraMovement();
         HandleCameraTilt();
+        HandleHeadbob();
 
         // Compute horizontal speed
         horizontalSpeed = new Vector3(playerVelocity.x, 0, playerVelocity.z).magnitude;
@@ -119,6 +134,41 @@ public class PlayerController : MonoBehaviour
         }
 
         currentCameraTilt = Mathf.Lerp(currentCameraTilt, targetTilt, wallRunTiltSpeed * Time.deltaTime);
+    }
+
+    void HandleHeadbob()
+    {
+        if (playerCamera == null) return;
+
+        // Only headbob when grounded and moving (not wallrunning or in air)
+        bool isMoving = horizontalInput != 0 || verticalInput != 0;
+
+        if (isGrounded && isMoving && !isWallRunning)
+        {
+            // Use different bobbing speed based on sprinting
+            float currentBobbingSpeed = isSprinting ? sprintBobbingSpeed : walkBobbingSpeed;
+
+            // Increment timer
+            headbobTimer += Time.deltaTime * currentBobbingSpeed;
+
+            // Calculate bobbing offset using sine wave
+            float bobbingOffset = Mathf.Sin(headbobTimer) * bobbingAmount;
+
+            // Apply bobbing to camera Y position
+            Vector3 newCameraPos = playerCamera.transform.localPosition;
+            newCameraPos.y = cameraYMidpoint + bobbingOffset;
+            playerCamera.transform.localPosition = newCameraPos;
+        }
+        else
+        {
+            // Reset timer when not moving/grounded
+            headbobTimer = 0f;
+
+            // Smoothly return camera to midpoint
+            Vector3 newCameraPos = playerCamera.transform.localPosition;
+            newCameraPos.y = Mathf.Lerp(newCameraPos.y, cameraYMidpoint, Time.deltaTime * 5f);
+            playerCamera.transform.localPosition = newCameraPos;
+        }
     }
 
     void PlayerMovement()
