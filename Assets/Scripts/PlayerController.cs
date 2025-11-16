@@ -18,8 +18,9 @@ public class PlayerController : MonoBehaviour
     [Header("Jumping Settings")]
     public float jumpForce = 7.0f;
     public float gravity = -19.62f;
+
     // How quickly the player can change horizontal velocity while airborne (higher = more control)
-    public float airControl = 2f;
+    public float airControl = 5f;
 
     [Header("Wall Running Settings")]
     public float wallRunSpeed = 10f;
