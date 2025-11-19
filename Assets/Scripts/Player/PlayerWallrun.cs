@@ -5,7 +5,7 @@ public class Wallrun : MonoBehaviour
 {
     public float wallRunSpeed = 10f;
     public float wallRunUpwardForce = 3f;
-    public float wallRunCameraTilt = 40f;
+    public float wallRunCameraTilt = 15f;
     public float wallRunTiltSpeed = 5f;
     public float minWallRunSpeed = 4f;
     public float wallRunDuration = 2f;
@@ -19,7 +19,6 @@ public class Wallrun : MonoBehaviour
     }
 
     private WallRunSide currentWallSide = WallRunSide.None;
-    private float horizontalSpeed;
     private Vector3 wallRunDirection;
     private float wallRunTimer;
     private bool touchedGroundSinceWallRun = true;
@@ -80,8 +79,6 @@ public class Wallrun : MonoBehaviour
     {
         // Determine which wall we're hitting
         Vector3 localHitNormal = transform.InverseTransformDirection(hit.normal);
-
-        Debug.Log("Collided!");
 
         if (localHitNormal.x > 0.5f) // Wall on our right
         {

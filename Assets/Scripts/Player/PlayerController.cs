@@ -13,12 +13,6 @@ public class PlayerController : MonoBehaviour
     public float mouseSensitivity = 2.0f;
     public float lookXLimit = 85.0f;
 
-    [Header("Headbob Settings")]
-    public float walkBobbingSpeed = 14f;
-    public float sprintBobbingSpeed = 18f;
-    public float bobbingAmount = 0.05f;
-    public float cameraYMidpoint = 0f;
-
     [Header("Jumping Settings")]
     public float jumpForce = 7.0f;
     public float gravity = -19.62f;
@@ -28,6 +22,7 @@ public class PlayerController : MonoBehaviour
 
     private CharacterController controller;
     private Wallrun wallRun;
+    private Headbob headbob;
     public LayerMask ground;
 
     private bool isGrounded;
@@ -36,20 +31,21 @@ public class PlayerController : MonoBehaviour
     private bool isSprinting;
     private float rotationX = 0;
     private float currentCameraTilt = 0f;
-    private float headbobTimer = 0f;
     private Vector3 playerVelocity;
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
         wallRun = GetComponent<Wallrun>();
+        headbob = GetComponent<Headbob>();
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         // Store initial camera Y position as midpoint
         if (playerCamera != null)
         {
-            cameraYMidpoint = playerCamera.transform.localPosition.y;
+            headbob.SetCameraYMidpoint(playerCamera.transform.localPosition.y);
         }
     }
 
@@ -65,6 +61,20 @@ public class PlayerController : MonoBehaviour
         wallRun.UpdateWallRun(isGrounded, ref currentCameraTilt);
     }
 
+    void HandleHeadbob()
+    {
+        var cameraPos = playerCamera.transform.localPosition;
+        headbob.ApplyCameraTransform(ref cameraPos, new Headbob.Params
+        {
+            HorizontalInput = horizontalInput,
+            VerticalInput = verticalInput,
+            IsGrounded = isGrounded,
+            IsWallRunning = wallRun.IsWallRunning,
+            IsSprinting = isSprinting,
+        });
+        playerCamera.transform.localPosition = cameraPos;
+    }
+
     void CameraMovement()
     {
         rotationX += -Input.GetAxis("Mouse Y") * mouseSensitivity;
@@ -77,41 +87,6 @@ public class PlayerController : MonoBehaviour
 
         float rotationY = Input.GetAxis("Mouse X") * mouseSensitivity;
         transform.Rotate(Vector3.up * rotationY);
-    }
-
-    void HandleHeadbob()
-    {
-        if (playerCamera == null) return;
-
-        // Only headbob when grounded and moving (not wallrunning or in air)
-        bool isMoving = horizontalInput != 0 || verticalInput != 0;
-
-        if (isGrounded && isMoving && !wallRun.IsWallRunning)
-        {
-            // Use different bobbing speed based on sprinting
-            float currentBobbingSpeed = isSprinting ? sprintBobbingSpeed : walkBobbingSpeed;
-
-            // Increment timer
-            headbobTimer += Time.deltaTime * currentBobbingSpeed;
-
-            // Calculate bobbing offset using sine wave
-            float bobbingOffset = Mathf.Sin(headbobTimer) * bobbingAmount;
-
-            // Apply bobbing to camera Y position
-            Vector3 newCameraPos = playerCamera.transform.localPosition;
-            newCameraPos.y = cameraYMidpoint + bobbingOffset;
-            playerCamera.transform.localPosition = newCameraPos;
-        }
-        else
-        {
-            // Reset timer when not moving/grounded
-            headbobTimer = 0f;
-
-            // Smoothly return camera to midpoint
-            Vector3 newCameraPos = playerCamera.transform.localPosition;
-            newCameraPos.y = Mathf.Lerp(newCameraPos.y, cameraYMidpoint, Time.deltaTime * 5f);
-            playerCamera.transform.localPosition = newCameraPos;
-        }
     }
 
     void PlayerMovement()
