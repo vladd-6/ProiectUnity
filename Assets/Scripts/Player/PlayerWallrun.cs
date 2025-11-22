@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Wallrun : MonoBehaviour
 {
-    public float wallRunSpeed = 10f;
+    public float wallRunSpeed = 100f;
     public float wallRunUpwardForce = 3f;
     public float wallRunCameraTilt = 15f;
     public float wallRunTiltSpeed = 5f;

@@ -33,7 +33,23 @@ public class PlayerController : MonoBehaviour
     private float currentCameraTilt = 0f;
     private Vector3 playerVelocity;
 
-    void Start()
+    // State machine
+    private IMovementState _state;
+
+    // Expose needed values to states
+    public CharacterController Controller => controller;
+    public Wallrun WallRun => wallRun;
+    public Vector3 PlayerVelocity { get => playerVelocity; set => playerVelocity = value; }
+    public bool IsSprinting { get => isSprinting; set => isSprinting = value; }
+    public float HorizontalInput => horizontalInput;
+    public float VerticalInput => verticalInput;
+    public float MoveSpeed => moveSpeed;
+    public float SprintSpeed => sprintSpeed;
+    public float JumpForce => jumpForce;
+    public float Gravity => gravity;
+    public float AirControl => airControl;
+
+    public void Start()
     {
         controller = GetComponent<CharacterController>();
         wallRun = GetComponent<Wallrun>();
@@ -47,18 +63,39 @@ public class PlayerController : MonoBehaviour
         {
             headbob.SetCameraYMidpoint(playerCamera.transform.localPosition.y);
         }
+
+        // Initialize state based on grounded status at start
+        isGrounded = controller.isGrounded;
+        _state = isGrounded ? new GroundedState() as IMovementState : new AirborneState();
+        _state.OnEnter(this);
     }
 
-    void Update()
+    public void Update()
     {
+        isGrounded = controller.isGrounded;
+
+        // Camera tilt from wallrun helper
         wallRun.HandleCameraTilt(ref currentCameraTilt);
 
-        PlayerMovement();
+        // State machine processing
+        _state.HandleInput(this);
+        _state.Tick(this);
+        var next = _state.TryTransition(this);
+        if (next != null)
+        {
+            _state.OnExit(this);
+            _state = next;
+            _state.OnEnter(this);
+        }
+
         CameraMovement();
         HandleHeadbob();
 
-        // Update wall run state and camera tilt
+        // Update wall run lifecycle (may stop wall run affecting next frame transition)
         wallRun.UpdateWallRun(isGrounded, ref currentCameraTilt);
+
+        // Apply movement via controller
+        controller.Move(playerVelocity * Time.deltaTime);
     }
 
     void HandleHeadbob()
@@ -89,88 +126,10 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(Vector3.up * rotationY);
     }
 
-    void PlayerMovement()
+    public void ReadMovementInput()
     {
-        isGrounded = controller.isGrounded;
-
-        // Reset vertical velocity if grounded
-        if (isGrounded && playerVelocity.y < 0)
-        {
-            playerVelocity.y = -2.0f;
-            wallRun.OnGroundedStateChanged(true);
-        }
-
-        // Get input (only used when not wall running)
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-
-        if (wallRun.IsWallRunning)
-        {
-            // AUTOMATIC MOVEMENT - ignore player input during wall run
-            wallRun.ApplyWallrunVelocity(ref playerVelocity);
-        }
-        else
-        {
-            // Normal movement
-            bool isTryingToMove = horizontalInput != 0 || verticalInput != 0;
-            bool isTryingToSprint = Input.GetKey(KeyCode.LeftShift);
-            isSprinting = isTryingToMove && isTryingToSprint;
-
-            float currentSpeed = isSprinting ? sprintSpeed : moveSpeed;
-            Vector3 moveDirection = (transform.forward * verticalInput + transform.right * horizontalInput).normalized * currentSpeed;
-
-            // If grounded, directly set horizontal velocity. If airborne, lerp towards desired horizontal
-            // velocity so we don't instantly wipe momentum (preserve inertia from wall-jump).
-            if (isGrounded)
-            {
-                playerVelocity.x = moveDirection.x;
-                playerVelocity.z = moveDirection.z;
-            }
-            else
-            {
-                float t = airControl * Time.deltaTime;
-                playerVelocity.x = Mathf.Lerp(playerVelocity.x, moveDirection.x, t);
-                playerVelocity.z = Mathf.Lerp(playerVelocity.z, moveDirection.z, t);
-            }
-        }
-
-        // Handle jumping
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (isGrounded)
-            {
-                playerVelocity.y = jumpForce;
-            }
-            else if (wallRun.IsWallRunning)
-            {
-                // Wall jump - preserve horizontal inertia and add outward/upward impulse
-                Vector3 horizontalVel = new Vector3(playerVelocity.x, 0f, playerVelocity.z);
-                Vector3 outwardDir = Vector3.zero;
-
-                if (wallRun.CurrentWallSide == Wallrun.WallRunSide.Right)
-                {
-                    outwardDir = -transform.right;
-                }
-                else if (wallRun.CurrentWallSide == Wallrun.WallRunSide.Left)
-                {
-                    outwardDir = transform.right;
-                }
-
-                const float outwardStrength = 12f;
-                playerVelocity = horizontalVel + outwardDir * outwardStrength;
-                playerVelocity.y = jumpForce;
-                wallRun.StopWallRun();
-            }
-        }
-
-        // Apply gravity (if not wallrunning)
-        if (!wallRun.IsWallRunning)
-        {
-            playerVelocity.y += gravity * Time.deltaTime;
-        }
-
-        // Apply movement
-        controller.Move(playerVelocity * Time.deltaTime);
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)

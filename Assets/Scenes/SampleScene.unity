@@ -2371,7 +2371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5030d4ca19a9c054db6cb5944acf0d00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Wallrun
-  wallRunSpeed: 10
+  wallRunSpeed: 100
   wallRunUpwardForce: 3
   wallRunCameraTilt: 15
   wallRunTiltSpeed: 5
