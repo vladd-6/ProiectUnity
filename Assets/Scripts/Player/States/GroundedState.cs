@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class GroundedState : IMovementState
 {
+    private bool _slideTriggered = false;
     public void OnEnter(PlayerController player)
     {
-        // Reset slight downward velocity and inform wallrun
         if (player.PlayerVelocity.y < 0f)
             player.PlayerVelocity = new Vector3(player.PlayerVelocity.x, -2f, player.PlayerVelocity.z);
         player.WallRun.OnGroundedStateChanged(true);
@@ -26,6 +26,8 @@ public class GroundedState : IMovementState
         {
             player.PlayerVelocity = new Vector3(player.PlayerVelocity.x, player.JumpForce, player.PlayerVelocity.z);
         }
+
+        _slideTriggered = Input.GetKeyDown(KeyCode.LeftControl);
     }
 
     public void Tick(PlayerController player)
@@ -41,6 +43,13 @@ public class GroundedState : IMovementState
             return new WallRunState();
         if (!player.Controller.isGrounded)
             return new AirborneState();
+        if (SlideRequired(player)) {
+            return new SlideState();
+        }
         return null;
+    }
+
+    private bool SlideRequired(PlayerController player) {
+        return _slideTriggered  && player.Controller.isGrounded;
     }
 }

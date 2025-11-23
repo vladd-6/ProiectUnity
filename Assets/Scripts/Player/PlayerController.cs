@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     private Wallrun wallRun;
     private Headbob headbob;
+    private PlayerSlide slide;
     public LayerMask ground;
 
     private bool isGrounded;

@@ -49,7 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Player\PlayerHeadbob.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerSlide.cs" />
     <Compile Include="Assets\Scripts\Player\States\WallRunState.cs" />
+    <Compile Include="Assets\Scripts\Player\States\SlideState.cs" />
     <Compile Include="Assets\Scripts\Player\States\AirborneState.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
