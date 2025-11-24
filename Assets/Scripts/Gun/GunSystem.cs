@@ -84,7 +84,7 @@ public class GunSystem : MonoBehaviour
             {
                 StartCoroutine(Reload());
             }
-            else if (Input.GetButtonDown("Fire1") && Time.time >= nextTimeToFire && currentAmmo > 0)
+            else if (Input.GetMouseButtonDown(0) && Time.time >= nextTimeToFire && currentAmmo > 0)
             {
                 nextTimeToFire = Time.time + fireRate;
                 Shoot();

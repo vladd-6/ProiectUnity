@@ -2734,8 +2734,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111efd9f7d537cc4286562d75c46a126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  sprintSpeed: 8
+  moveSpeed: 8
+  sprintSpeed: 15
   playerCamera: {fileID: 330585545}
   mouseSensitivity: 2
   lookXLimit: 85
@@ -2833,7 +2833,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 2
-  m_Radius: 0.5
+  m_Radius: 0.75
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -2851,7 +2851,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5030d4ca19a9c054db6cb5944acf0d00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Wallrun
-  wallRunSpeed: 10
+  wallRunSpeed: 25
   wallRunUpwardForce: 3
   wallRunCameraTilt: 15
   wallRunTiltSpeed: 5
