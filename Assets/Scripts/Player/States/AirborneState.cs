@@ -4,7 +4,7 @@ public class AirborneState : IMovementState
 {
     private bool _preserveMomentum = false;
     private Vector3 _initialHorizontalVelocity;
-    private float _momentumDecayTime = 0.5f;
+    private float _momentumDecayTime = 60f;
     private float _momentumTimer = 0f;
     private bool _slideTriggered = false;
     public void OnEnter(PlayerController player)
