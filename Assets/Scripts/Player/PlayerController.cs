@@ -90,7 +90,8 @@ public class PlayerController : MonoBehaviour
         }
 
         CameraMovement();
-        HandleHeadbob();
+        if (isGrounded && _state is not SlideState)
+            HandleHeadbob();
 
         // Update wall run lifecycle (may stop wall run affecting next frame transition)
         wallRun.UpdateWallRun(isGrounded, ref currentCameraTilt);
