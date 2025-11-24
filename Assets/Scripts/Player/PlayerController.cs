@@ -36,6 +36,13 @@ public class PlayerController : MonoBehaviour
 
     // State machine
     private IMovementState _state;
+    
+    // Camera lerp for slide transitions
+    private bool _hasPendingCameraLerp = false;
+    private float _pendingCameraTargetY;
+    private float _pendingCameraLerpDuration;
+    private float _pendingCameraLerpTimer = 0f;
+    private float _pendingCameraStartY;
 
     // Expose needed values to states
     public CharacterController Controller => controller;
@@ -49,6 +56,15 @@ public class PlayerController : MonoBehaviour
     public float JumpForce => jumpForce;
     public float Gravity => gravity;
     public float AirControl => airControl;
+    
+    public void SetPendingCameraLerp(float targetY, float duration)
+    {
+        _hasPendingCameraLerp = true;
+        _pendingCameraTargetY = targetY;
+        _pendingCameraLerpDuration = duration;
+        _pendingCameraLerpTimer = 0f;
+        _pendingCameraStartY = playerCamera.transform.localPosition.y;
+    }
 
     public void Start()
     {
@@ -90,8 +106,10 @@ public class PlayerController : MonoBehaviour
         }
 
         CameraMovement();
-        if (isGrounded && _state is not SlideState)
+        if (isGrounded && !(_state is SlideState))
             HandleHeadbob();
+        
+        HandlePendingCameraLerp();
 
         // Update wall run lifecycle (may stop wall run affecting next frame transition)
         wallRun.UpdateWallRun(isGrounded, ref currentCameraTilt);
@@ -137,5 +155,26 @@ public class PlayerController : MonoBehaviour
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         wallRun.OnWallHit(hit, ref playerVelocity);
+    }
+    
+    void HandlePendingCameraLerp()
+    {
+        if (!_hasPendingCameraLerp || _state is SlideState)
+            return;
+        
+        _pendingCameraLerpTimer += Time.deltaTime;
+        float t = Mathf.Clamp01(_pendingCameraLerpTimer / _pendingCameraLerpDuration);
+        
+        // Ease out
+        t = 1f - (1f - t) * (1f - t);
+        
+        var cameraPos = playerCamera.transform.localPosition;
+        cameraPos.y = Mathf.Lerp(_pendingCameraStartY, _pendingCameraTargetY, t);
+        playerCamera.transform.localPosition = cameraPos;
+        
+        if (_pendingCameraLerpTimer >= _pendingCameraLerpDuration)
+        {
+            _hasPendingCameraLerp = false;
+        }
     }
 }

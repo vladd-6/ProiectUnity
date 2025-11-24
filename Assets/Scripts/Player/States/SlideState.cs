@@ -11,7 +11,7 @@ public class SlideState : IMovementState
     private float _targetCameraY = 0f;
     private float _slideInDuration = 0.15f;  // How long to slide camera down
     private float _slideOutDuration = 0.15f; // How long to slide camera back up
-    
+    private bool _jumpedFromSlide = false;
     public void HandleInput(PlayerController player)
     {
 
@@ -27,14 +27,23 @@ public class SlideState : IMovementState
 
     public void OnExit(PlayerController player)
     {
-        // Change camera directly on ground
-        // var cameraPos = player.playerCamera.transform.localPosition;
-        // cameraPos.y = _initialCameraY;
-        // player.playerCamera.transform.localPosition = cameraPos;
+        // Store slide exit info for next state to handle camera lerp
+        if (_jumpedFromSlide)
+        {
+            player.SetPendingCameraLerp(_initialCameraY, 0.2f);
+        }
     }
 
     public void Tick(PlayerController player)
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            player.PlayerVelocity = new Vector3(player.PlayerVelocity.x, player.JumpForce, player.PlayerVelocity.z);
+            _jumpedFromSlide = true;
+            _isSliding = false;
+            return;
+        }
+
         _slideTimer -= Time.deltaTime;
         if (_slideTimer <= 0f)
         {
@@ -62,7 +71,7 @@ public class SlideState : IMovementState
             // Hold at target position
             t = 1f;
         }
-        
+
         var cameraPos = player.playerCamera.transform.localPosition;
         cameraPos.y = Mathf.Lerp(_initialCameraY, _targetCameraY, t);
         player.playerCamera.transform.localPosition = cameraPos;
@@ -80,10 +89,11 @@ public class SlideState : IMovementState
                 return new GroundedState();
             else
                 return new AirborneState();
-        } else { // stop mid-slide
-            if (!player.Controller.isGrounded) {
+        }
+        else
+        { // stop mid-slide
+            if (!player.Controller.isGrounded)
                 return new AirborneState();
-            }
         }
 
         return null;
