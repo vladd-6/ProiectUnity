@@ -5,8 +5,8 @@ public class PlayerController : MonoBehaviour
 {
 
     [Header("Movement Settings")]
-    public float moveSpeed = 8.0f;
-    public float sprintSpeed = 15.0f;
+    public float moveSpeed = 6.0f;
+    public float sprintSpeed = 11.0f;
 
     [Header("Look Settings")]
     public Camera playerCamera;

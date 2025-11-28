@@ -2789,8 +2789,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111efd9f7d537cc4286562d75c46a126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 8
-  sprintSpeed: 15
+  moveSpeed: 6
+  sprintSpeed: 11
   playerCamera: {fileID: 330585545}
   mouseSensitivity: 2
   lookXLimit: 85
@@ -2911,7 +2911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5030d4ca19a9c054db6cb5944acf0d00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Wallrun
-  wallRunSpeed: 25
+  wallRunSpeed: 20
   wallRunUpwardForce: 3
   wallRunCameraTilt: 15
   wallRunTiltSpeed: 5
@@ -2950,7 +2950,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DashEffects
   postProcessVolume: {fileID: 832575518}
   vignetteIntensity: 0.5
-  vignetteDuration: 1
+  vignetteDuration: 2
 --- !u!1 &1184145198
 GameObject:
   m_ObjectHideFlags: 0

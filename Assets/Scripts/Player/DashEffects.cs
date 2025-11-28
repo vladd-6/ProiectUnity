@@ -7,7 +7,7 @@ public class DashEffects : MonoBehaviour
     [Header("Vignette Settings")]
     public Volume postProcessVolume;
     public float vignetteIntensity = 0.5f;
-    public float vignetteDuration = 0.5f;
+    public float vignetteDuration = 2f;
     
     private Vignette _vignette;
     private float _defaultVignetteIntensity;
