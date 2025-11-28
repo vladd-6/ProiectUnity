@@ -146,7 +146,13 @@ public class GunSystem : MonoBehaviour
 
         if (Physics.Raycast(Camera.transform.position, Camera.transform.forward, out hit, range, layerMask))
         {
-            Debug.Log("Am lovit: " + hit.transform.name);
+            STT_Actor target = hit.collider.GetComponent<STT_Actor>();
+
+            if (target != null)
+            {
+                target.ReceiveDamage(damage, hit.point);
+                Debug.Log("Am lovit si am dat damage la: " + hit.transform.name);
+            }
         }
     }
 
