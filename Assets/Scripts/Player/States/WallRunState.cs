@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class WallRunState : IMovementState
 {
+    // TODO: Make wallrunning have
     private bool _wallJumpTriggered;
 
     public void OnEnter(PlayerController player) { _wallJumpTriggered = false; }

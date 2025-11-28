@@ -17,9 +17,6 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 7.0f;
     public float gravity = -19.62f;
 
-    // How quickly the player can change horizontal velocity while airborne (higher = more control)
-    public float airControl = 5f;
-
     private CharacterController controller;
     private Wallrun wallRun;
     private Headbob headbob;
@@ -54,9 +51,7 @@ public class PlayerController : MonoBehaviour
     public float MoveSpeed => moveSpeed;
     public float SprintSpeed => sprintSpeed;
     public float JumpForce => jumpForce;
-    public float Gravity => gravity;
-    public float AirControl => airControl;
-    
+    public float Gravity => gravity;    
     public void SetPendingCameraLerp(float targetY, float duration)
     {
         _hasPendingCameraLerp = true;

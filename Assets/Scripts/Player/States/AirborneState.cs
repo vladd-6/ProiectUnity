@@ -7,6 +7,8 @@ public class AirborneState : IMovementState
     private float _momentumDecayTime = 60f;
     private float _momentumTimer = 0f;
     private bool _slideTriggered = false;
+    private float _airControl = 5f;
+    private bool _doubleJumpUsed = false;
     public void OnEnter(PlayerController player)
     {
         // Preserve horizontal velocity if coming from a high-speed state like slide
@@ -35,13 +37,20 @@ public class AirborneState : IMovementState
         bool isTryingToMove = player.HorizontalInput != 0 || player.VerticalInput != 0;
         bool isTryingToSprint = Input.GetKey(KeyCode.LeftShift);
         player.IsSprinting = isTryingToMove && isTryingToSprint; // Sprint only affects horizontal air control speed
-        // No jump here (only wall / grounded)
+        
+        if (Input.GetKeyDown(KeyCode.Space) && !_doubleJumpUsed)
+        {
+            player.PlayerVelocity = new Vector3(player.PlayerVelocity.x, player.JumpForce, player.PlayerVelocity.z);
+            _doubleJumpUsed = true;
+        }
     }
 
     public void Tick(PlayerController player)
     {
         Vector3 hv;
         
+        // TODO: airControl does not work when preserving momentum
+        // It's more realistic but maybe not what we want
         if (_preserveMomentum)
         {
             _momentumTimer += Time.deltaTime;
@@ -62,7 +71,7 @@ public class AirborneState : IMovementState
         {
             float targetSpeed = player.IsSprinting ? player.SprintSpeed : player.MoveSpeed;
             Vector3 desired = (player.transform.forward * player.VerticalInput + player.transform.right * player.HorizontalInput).normalized * targetSpeed;
-            float t = player.AirControl * Time.deltaTime;
+            float t = _airControl * Time.deltaTime;
             hv = new(player.PlayerVelocity.x, 0f, player.PlayerVelocity.z);
             hv.x = Mathf.Lerp(hv.x, desired.x, t);
             hv.z = Mathf.Lerp(hv.z, desired.z, t);
