@@ -10,6 +10,12 @@ public class DashState : IMovementState
     
     public void OnEnter(PlayerController player)
     {
+        // Trigger vignette effect
+        if (player.DashEffects != null)
+        {
+            player.DashEffects.TriggerVignettePulse();
+        }
+        
         // Store previous velocity to preserve it
         _previousVelocity = player.PlayerVelocity;
         
@@ -31,6 +37,17 @@ public class DashState : IMovementState
         
         // Calculate and store the dash boost
         _dashBoost = _dashDirection * player.DashImpulse;
+        
+        // Redirect existing horizontal momentum in the dash direction
+        Vector3 horizontalVelocity = new Vector3(_previousVelocity.x, 0, _previousVelocity.z);
+        float currentSpeed = horizontalVelocity.magnitude;
+        
+        // Reapply the speed in the new dash direction
+        _previousVelocity = new Vector3(
+            _dashDirection.x * currentSpeed,
+            _previousVelocity.y,
+            _dashDirection.z * currentSpeed
+        );
     }
 
     public void OnExit(PlayerController player)

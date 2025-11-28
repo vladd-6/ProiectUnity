@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
     private Wallrun wallRun;
     private Headbob headbob;
     private PlayerSlide slide;
+    private DashEffects dashEffects;
     public LayerMask ground;
 
     private bool isGrounded;
@@ -60,6 +61,7 @@ public class PlayerController : MonoBehaviour
     public float DashImpulse => dashImpulse;
     public float DashDelay => dashDelay;
     public float DashClock { get => dashClock; set => dashClock = value; }
+    public DashEffects DashEffects => dashEffects;
     public void SetPendingCameraLerp(float targetY, float duration)
     {
         _hasPendingCameraLerp = true;
@@ -74,6 +76,7 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         wallRun = GetComponent<Wallrun>();
         headbob = GetComponent<Headbob>();
+        dashEffects = GetComponent<DashEffects>();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

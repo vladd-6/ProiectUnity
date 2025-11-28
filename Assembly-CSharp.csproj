@@ -57,6 +57,7 @@
     <Compile Include="Assets\Scripts\Player\States\AirborneState.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
+    <Compile Include="Assets\Scripts\Player\DashEffects.cs" />
     <Compile Include="Assets\Low Poly Guns\Scripts\GunView.cs" />
     <Compile Include="Assets\Scripts\Player\States\GroundedState.cs" />
     <Compile Include="Assets\Scripts\Player\States\DashState.cs" />
