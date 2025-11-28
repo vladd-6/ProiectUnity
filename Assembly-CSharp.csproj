@@ -59,6 +59,7 @@
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Low Poly Guns\Scripts\GunView.cs" />
     <Compile Include="Assets\Scripts\Player\States\GroundedState.cs" />
+    <Compile Include="Assets\Scripts\Player\States\DashState.cs" />
     <Compile Include="Assets\Scripts\Player\States\IMovementState.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerWallrun.cs" />
   </ItemGroup>

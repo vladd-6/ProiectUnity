@@ -7,10 +7,12 @@ public class AirborneState : IMovementState
     private float _momentumDecayTime = 60f;
     private float _momentumTimer = 0f;
     private bool _slideTriggered = false;
+    private bool _dashTriggered = false;
     private float _airControl = 5f;
     private bool _doubleJumpUsed = false;
     public void OnEnter(PlayerController player)
     {
+        _dashTriggered = false;
         // Preserve horizontal velocity if coming from a high-speed state like slide
         Vector3 horizontalVel = new Vector3(player.PlayerVelocity.x, 0, player.PlayerVelocity.z);
         float horizontalSpeed = horizontalVel.magnitude;
@@ -42,6 +44,12 @@ public class AirborneState : IMovementState
         {
             player.PlayerVelocity = new Vector3(player.PlayerVelocity.x, player.JumpForce, player.PlayerVelocity.z);
             _doubleJumpUsed = true;
+        }
+        
+        if (Input.GetMouseButtonDown((int)UnityEngine.UIElements.MouseButton.RightMouse) && player.DashClock <= 0f)
+        {
+            _dashTriggered = true;
+            player.DashClock = player.DashDelay;
         }
     }
 
@@ -88,6 +96,8 @@ public class AirborneState : IMovementState
 
     public IMovementState TryTransition(PlayerController player)
     {
+        if (_dashTriggered)
+            return new DashState();
         if (player.WallRun.IsWallRunning)
             return new WallRunState();
         if (player.Controller.isGrounded)

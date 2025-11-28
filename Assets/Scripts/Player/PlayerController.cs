@@ -17,6 +17,11 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 7.0f;
     public float gravity = -19.62f;
 
+    [Header("Dash settings")]
+    public float dashImpulse = 60f;
+    public float dashDelay = 2f;
+    public float dashClock = 0f;
+
     private CharacterController controller;
     private Wallrun wallRun;
     private Headbob headbob;
@@ -51,7 +56,10 @@ public class PlayerController : MonoBehaviour
     public float MoveSpeed => moveSpeed;
     public float SprintSpeed => sprintSpeed;
     public float JumpForce => jumpForce;
-    public float Gravity => gravity;    
+    public float Gravity => gravity;
+    public float DashImpulse => dashImpulse;
+    public float DashDelay => dashDelay;
+    public float DashClock { get => dashClock; set => dashClock = value; }
     public void SetPendingCameraLerp(float targetY, float duration)
     {
         _hasPendingCameraLerp = true;
@@ -85,6 +93,7 @@ public class PlayerController : MonoBehaviour
     public void Update()
     {
         isGrounded = controller.isGrounded;
+        dashClock -= Time.deltaTime;
 
         // Camera tilt from wallrun helper
         wallRun.HandleCameraTilt(ref currentCameraTilt);
