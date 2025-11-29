@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GroundedState : IMovementState
 {
     private bool _slideTriggered = false;
+    private bool _dashTriggered = false;
     private bool _preserveMomentum = false;
     private Vector3 _initialHorizontalVelocity;
     private float _momentumDecayTime = 0.3f;
@@ -10,6 +12,7 @@ public class GroundedState : IMovementState
     
     public void OnEnter(PlayerController player)
     {
+        _dashTriggered = false;
         if (player.PlayerVelocity.y < 0f)
             player.PlayerVelocity = new Vector3(player.PlayerVelocity.x, -2f, player.PlayerVelocity.z);
         player.WallRun.OnGroundedStateChanged(true);
@@ -48,9 +51,13 @@ public class GroundedState : IMovementState
         }
 
         _slideTriggered = Input.GetKeyDown(KeyCode.LeftControl);
-    }
 
-    public void Tick(PlayerController player)
+        if (Input.GetMouseButtonDown((int)MouseButton.RightMouse) && player.DashClock <= 0f)
+        {
+            _dashTriggered = true;
+            player.DashClock = player.DashDelay;
+        }
+    }    public void Tick(PlayerController player)
     {
         Vector3 moveDirection;
         
@@ -81,6 +88,8 @@ public class GroundedState : IMovementState
 
     public IMovementState TryTransition(PlayerController player)
     {
+        if (_dashTriggered)
+            return new DashState();
         if (player.WallRun.IsWallRunning)
             return new WallRunState();
         if (!player.Controller.isGrounded)

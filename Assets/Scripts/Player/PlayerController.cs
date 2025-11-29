@@ -5,8 +5,8 @@ public class PlayerController : MonoBehaviour
 {
 
     [Header("Movement Settings")]
-    public float moveSpeed = 8.0f;
-    public float sprintSpeed = 15.0f;
+    public float moveSpeed = 6.0f;
+    public float sprintSpeed = 11.0f;
 
     [Header("Look Settings")]
     public Camera playerCamera;
@@ -17,13 +17,16 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 7.0f;
     public float gravity = -19.62f;
 
-    // How quickly the player can change horizontal velocity while airborne (higher = more control)
-    public float airControl = 5f;
+    [Header("Dash settings")]
+    public float dashImpulse = 60f;
+    public float dashDelay = 2f;
+    public float dashClock = 0f;
 
     private CharacterController controller;
     private Wallrun wallRun;
     private Headbob headbob;
     private PlayerSlide slide;
+    private DashEffects dashEffects;
     public LayerMask ground;
 
     private bool isGrounded;
@@ -55,8 +58,10 @@ public class PlayerController : MonoBehaviour
     public float SprintSpeed => sprintSpeed;
     public float JumpForce => jumpForce;
     public float Gravity => gravity;
-    public float AirControl => airControl;
-    
+    public float DashImpulse => dashImpulse;
+    public float DashDelay => dashDelay;
+    public float DashClock { get => dashClock; set => dashClock = value; }
+    public DashEffects DashEffects => dashEffects;
     public void SetPendingCameraLerp(float targetY, float duration)
     {
         _hasPendingCameraLerp = true;
@@ -71,6 +76,7 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         wallRun = GetComponent<Wallrun>();
         headbob = GetComponent<Headbob>();
+        dashEffects = GetComponent<DashEffects>();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -90,6 +96,7 @@ public class PlayerController : MonoBehaviour
     public void Update()
     {
         isGrounded = controller.isGrounded;
+        dashClock -= Time.deltaTime;
 
         // Camera tilt from wallrun helper
         wallRun.HandleCameraTilt(ref currentCameraTilt);

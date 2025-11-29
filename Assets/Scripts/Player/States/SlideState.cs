@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SlideState : IMovementState
 {
-    private float slideSpeed = 30f;
+    private float slideSpeed = 20f;
     private float _slideDuration = 1f;
     private float _slideTimer = 0f;
     private bool _isSliding;

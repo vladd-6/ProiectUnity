@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class WallRunState : IMovementState
 {
+    // TODO: Make wallrunning have
     private bool _wallJumpTriggered;
 
     public void OnEnter(PlayerController player) { _wallJumpTriggered = false; }
@@ -24,7 +25,7 @@ public class WallRunState : IMovementState
                 outwardDir = -player.transform.right;
             else if (player.WallRun.CurrentWallSide == Wallrun.WallRunSide.Left)
                 outwardDir = player.transform.right;
-            const float outwardStrength = 12f;
+            const float outwardStrength = 5f;
             Vector3 newVel = horizontalVel + outwardDir * outwardStrength;
             newVel.y = player.JumpForce;
             player.PlayerVelocity = newVel;
