@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 9c354c92776dc437a8bae068b472a154
+timeCreated: 1504921150
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 87087
+  packageName: Smart Turret Template
+  packageVersion: 1.0
+  assetPath: Assets/Smart Turret Template/Animations/STT_Shot_Animation.anim
+  uploadId: 484020

@@ -62,20 +62,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Player\PlayerHeadbob.cs" />
-    <Compile Include="Assets\Smart Turret Template\Scripts\STT_Turret.cs" />
+    <Compile Include="Assets\Scripts\Drone\DroneController.cs" />
+    <Compile Include="Assets\Scripts\Drone\DroneHealth.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerSlide.cs" />
-    <Compile Include="Assets\Low Poly Guns\Scripts\GunsMenu.cs" />
     <Compile Include="Assets\Scripts\Gun\GunSystem.cs" />
+    <Compile Include="Assets\ImportedAssets\Turret\Scripts\STT_Actor.cs" />
+    <Compile Include="Assets\ImportedAssets\Turret\Scripts\STT_Turret.cs" />
     <Compile Include="Assets\Scripts\Player\States\WallRunState.cs" />
+    <Compile Include="Assets\ImportedAssets\Guns\Scripts\GunView.cs" />
     <Compile Include="Assets\Scripts\Player\States\SlideState.cs" />
     <Compile Include="Assets\Scripts\Player\States\AirborneState.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
+    <Compile Include="Assets\ImportedAssets\Guns\Scripts\GunsMenu.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
-    <Compile Include="Assets\Smart Turret Template\Scripts\STT_Actor.cs" />
-    <Compile Include="Assets\Low Poly Guns\Scripts\GunView.cs" />
     <Compile Include="Assets\Scripts\Player\States\GroundedState.cs" />
     <Compile Include="Assets\Scripts\Player\States\IMovementState.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerWallrun.cs" />
+    <Compile Include="Assets\Scripts\Drone\DroneWeapon.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -86,6 +89,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\SDFFunctions.hlsl" />
+    <None Include="Assets\ImportedAssets\Drone\Readme.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />

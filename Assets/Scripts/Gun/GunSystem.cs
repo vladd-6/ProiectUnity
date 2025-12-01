@@ -146,12 +146,20 @@ public class GunSystem : MonoBehaviour
 
         if (Physics.Raycast(Camera.transform.position, Camera.transform.forward, out hit, range, layerMask))
         {
-            STT_Actor target = hit.collider.GetComponent<STT_Actor>();
+            Debug.Log("RAZA A LOVIT FIZIC OBIECTUL: " + hit.collider.name);
 
-            if (target != null)
+            // hit turret
+            STT_Actor turretHealth = hit.collider.GetComponent<STT_Actor>();
+            if (turretHealth != null)
             {
-                target.ReceiveDamage(damage, hit.point);
-                Debug.Log("Am lovit si am dat damage la: " + hit.transform.name);
+                turretHealth.ReceiveDamage(damage, hit.point);
+            }
+
+            // hit drone
+            DroneHealth droneHealth = hit.collider.GetComponent<DroneHealth>();
+            if (droneHealth != null)
+            {
+                droneHealth.ReceiveDamage(damage, hit.point);
             }
         }
     }

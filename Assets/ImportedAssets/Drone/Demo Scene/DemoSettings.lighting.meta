@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 89418ffbebc1a4b42a695e9f1be66f2c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4890085278179872738
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 82234
+  packageName: Low poly combat drone
+  packageVersion: 1.0
+  assetPath: Assets/VoodooPlay/Demo Scene/DemoSettings.lighting
+  uploadId: 749199

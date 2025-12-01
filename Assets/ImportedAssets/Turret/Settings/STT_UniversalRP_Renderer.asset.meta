@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 713041f5696e8b740a0939d61ee59f94
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 87087
+  packageName: Smart Turret Template
+  packageVersion: 1.0
+  assetPath: Assets/Smart Turret Template/Settings/STT_UniversalRP_Renderer.asset
+  uploadId: 484020
