@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Am redenumit clasele ajutatoare
 [System.Serializable]
 public class DroneHealthParameters
 {
     [Tooltip("Health points")]
-    public float toughness = 50f;
+    public float toughness = 50f; // drone hp
     [HideInInspector]
     public float maxHealth;
 }
@@ -16,26 +15,26 @@ public class DroneHealthParameters
 [System.Serializable]
 public class DroneFX
 {
-    public GameObject damageFX;
-    public GameObject deactivateFX; // Explozia finala
+    // TODO
+    public GameObject damageFX; // GameObject will be instantiated at the point of the hit
+    public GameObject deactivateFX; // GameObject will be instantiated at the point of the hit
 }
 
 [System.Serializable]
 public class DroneAudio
 {
-    public AudioClip destroyClip;
+    public AudioClip destroyClip; // played when object is destroyed
 }
 
 [RequireComponent(typeof(AudioSource))]
 public class DroneHealth : MonoBehaviour
-{ // Nume clasa nou
-
+{ 
     public DroneHealthParameters parameters;
     public DroneFX VFX;
     public DroneAudio SFX;
 
     [Header("UI Interface")]
-    public Slider healthBar;
+    public Slider healthBar; // TODO: add healthbar to drone
 
     private void Awake()
     {
@@ -66,35 +65,20 @@ public class DroneHealth : MonoBehaviour
 
     private void Die()
     {
-        // 1. Efecte Vizuale (Explozie)
+        // explosion when destroyed
         if (VFX.deactivateFX != null)
         {
             GameObject explosion = Instantiate(VFX.deactivateFX, transform.position, Quaternion.identity);
             Destroy(explosion, 3);
         }
 
-        // 2. SUNETUL (Solutia Eleganta)
-        // Cream un sunet independent in lume, la pozitia dronei
+        // explosion sound, played independently in world
         if (SFX.destroyClip)
         {
-            // Parametri: Clipul, Pozitia, Volumul (1.0f = 100%)
             AudioSource.PlayClipAtPoint(SFX.destroyClip, transform.position, 1.0f);
         }
 
-        // 3. LOGICA DE JOC (Doar pentru Player)
-        if (gameObject.tag == "Player")
-        {
-            Debug.Log("GAME OVER");
-            // Aici nu dam Destroy, doar dezactivam controalele
-            // logic? de game over...
-        }
-        else
-        {
-            // 4. DISTRUGERE INSTANTANEE (Pentru Drona)
-            // Nu mai e nevoie sa dezactivam manual rendere, lumini, colidere.
-            // Stergem tot obiectul acum.
-            Destroy(gameObject);
-        }
+        Destroy(gameObject);
     }
 
     private void UpdateHealthUI()

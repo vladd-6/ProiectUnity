@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class DroneWeaponStats
 {
+    // drone stats (TODO: read them from a file)
     [Header("Combat Stats")]
     public float power = 10f;
     public float fireRate = 0.5f;
@@ -19,55 +20,55 @@ public class DroneWeaponStats
 [System.Serializable]
 public class DroneWeaponFX
 {
-    public Transform muzzle;
-    public GameObject shotFX;
+    public Transform muzzle; // origin for raycast
+    public GameObject shotFX; //  GameObject will be instantiated in the shot event
 }
 
 [System.Serializable]
 public class DroneWeaponAudio
 {
-    public AudioClip shotClip;
+    public AudioClip shotClip; // audio played when the drone shoots
 }
 
 [RequireComponent(typeof(AudioSource))]
 public class DroneWeapon : MonoBehaviour
 {
-
     public DroneWeaponStats stats;
     public DroneWeaponFX VFX;
     public DroneWeaponAudio SFX;
 
     private float fireTimer;
     private Transform playerTarget;
-    private DroneController droneBrain; // Referinta la scriptul de miscare
+    private DroneController droneBrain;
 
     private void Start()
     {
-        // 1. Gasim Player-ul
+        // find player
         GameObject p = GameObject.FindGameObjectWithTag("Player");
-        if (p != null) playerTarget = p.transform;
+        if (p != null) 
+            playerTarget = p.transform;
 
-        // 2. Ne conectam la "Creierul" dronei (DroneController) de pe acelasi obiect
+        // link drone controller
         droneBrain = GetComponent<DroneController>();
     }
 
     private void Update()
     {
-        if (VFX.muzzle == null || droneBrain == null || playerTarget == null) return;
+        if (VFX.muzzle == null || droneBrain == null || playerTarget == null) 
+            return;
 
-        // --- MODIFICAREA PRINCIPALA ---
-        // Arma functioneaza DOAR daca Drona a decis ca te vede (Lumina Rosie)
+        // drone shoots only if in fov (managed in drone controller)
         if (droneBrain.isPlayerVisible)
         {
-            // 1. Orientam teava spre pieptul player-ului
+            // point drone at player
             VFX.muzzle.LookAt(playerTarget.position + Vector3.up * 1.5f);
 
-            // 2. Gestionam tragerea
+            // manage cooldown
             fireTimer -= Time.deltaTime;
 
             if (fireTimer <= 0)
             {
-                // Facem totusi verificarea finala daca linia de tragere e libera
+                // final check if in direct sight 
                 if (CheckLineOfFire())
                 {
                     Shoot();
@@ -77,13 +78,12 @@ public class DroneWeapon : MonoBehaviour
         }
     }
 
-    // Am redenumit functia ca sa fie mai clar ce face (Verifica linia de tragere)
     private bool CheckLineOfFire()
     {
         RaycastHit hit;
         int combinedMask = stats.whatIsEnemy | stats.obstacles;
 
-        // Debug vizual: Verde cand trage
+        // visual debug (TODO: delete)
         Debug.DrawRay(VFX.muzzle.position, VFX.muzzle.forward * stats.range, Color.green);
 
         if (Physics.SphereCast(VFX.muzzle.position, stats.hitThickness, VFX.muzzle.forward, out hit, stats.range, combinedMask))
@@ -98,7 +98,8 @@ public class DroneWeapon : MonoBehaviour
 
     private void Shoot()
     {
-        if (SFX.shotClip) GetComponent<AudioSource>().PlayOneShot(SFX.shotClip, Random.Range(0.8f, 1.1f));
+        if (SFX.shotClip) 
+            GetComponent<AudioSource>().PlayOneShot(SFX.shotClip, Random.Range(0.8f, 1.1f));
 
         if (VFX.shotFX != null)
         {
@@ -111,6 +112,7 @@ public class DroneWeapon : MonoBehaviour
 
         if (Physics.SphereCast(VFX.muzzle.position, stats.hitThickness, VFX.muzzle.forward, out hit, stats.range, combinedMask))
         {
+            // manage health loss with player script
             STT_Actor targetActor = hit.collider.GetComponent<STT_Actor>();
             if (targetActor != null)
             {
