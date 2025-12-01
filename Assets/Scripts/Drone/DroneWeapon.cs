@@ -113,7 +113,7 @@ public class DroneWeapon : MonoBehaviour
         if (Physics.SphereCast(VFX.muzzle.position, stats.hitThickness, VFX.muzzle.forward, out hit, stats.range, combinedMask))
         {
             // manage health loss with player script
-            STT_Actor targetActor = hit.collider.GetComponent<STT_Actor>();
+            HealthController targetActor = hit.collider.GetComponent<HealthController>();
             if (targetActor != null)
             {
                 targetActor.ReceiveDamage(stats.power, hit.point);

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33361402039763634}
   - component: {fileID: 23155039922916792}
   m_Layer: 0
-  m_Name: STT_Turret
+  m_Name: Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1178177964436236}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 33609206070196604}
   - component: {fileID: 23631417789048686}
   m_Layer: 0
-  m_Name: Head_Muzzle
+  m_Name: HeadMuzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -213,7 +213,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4225016787262522}
-  - component: {fileID: 114386945016863856}
   - component: {fileID: 33183526708360652}
   - component: {fileID: 23449375468130684}
   - component: {fileID: 82603800130370074}
@@ -221,7 +220,8 @@ GameObject:
   - component: {fileID: 54714502562792376}
   - component: {fileID: 65637582589499552}
   - component: {fileID: 95681370936517936}
-  - component: {fileID: 892762640448494205}
+  - component: {fileID: 114386945016863856}
+  - component: {fileID: 5407747502362258724}
   m_Layer: 0
   m_Name: Head
   m_TagString: Untagged
@@ -246,35 +246,6 @@ Transform:
   - {fileID: 4822253877191706}
   m_Father: {fileID: 4803831803365226}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114386945016863856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1876167613903482}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7b77d5a3ac0349a9a4c1bbd36979f97, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parameters:
-    active: 1
-    canFire: 1
-    power: 10
-    ShootingDelay: 1
-    radius: 5
-  targeting:
-    aimingSpeed: 1
-    aimingDelay: 1
-    tagsToFire: []
-    targets: []
-    target: {fileID: 0}
-  VFX:
-    muzzle: {fileID: 4822253877191706}
-    shotFX: {fileID: 1579546626485678, guid: 7db58c0e931b44d52826ad1829194c32, type: 3}
-  SFX:
-    shotClip: {fileID: 8300000, guid: 29c04ba19da834fb0968146ce5e3a847, type: 3}
 --- !u!33 &33183526708360652
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -456,7 +427,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 10
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -469,7 +440,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 94
   m_CollisionDetection: 0
@@ -516,7 +487,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &892762640448494205
+--- !u!114 &114386945016863856
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -525,15 +496,47 @@ MonoBehaviour:
   m_GameObject: {fileID: 1876167613903482}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f77d44d8218254489aaac99af7d45a3, type: 3}
+  m_Script: {fileID: 11500000, guid: b7b77d5a3ac0349a9a4c1bbd36979f97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   parameters:
-    toughness: 0
-    armor: 0
-    damageFactor: 0
+    active: 1
+    canFire: 1
+    power: 10
+    ShootingDelay: 0.6
+    radius: 10
+  targeting:
+    aimingSpeed: 50
+    aimingDelay: 1
+    tagsToFire:
+    - Player
+    targets:
+    - {fileID: 0}
+    target: {fileID: 0}
+  VFX:
+    muzzle: {fileID: 4822253877191706}
+    shotFX: {fileID: 0}
+  SFX:
+    shotClip: {fileID: 8300000, guid: a0a824e5785b3436886b35bd41079060, type: 3}
+--- !u!114 &5407747502362258724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1876167613903482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63d279957ce1d5c4986cc42290fa57e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parameters:
+    toughness: 100
+    armor: 5
+    damageFactor: 1
   VFX:
     damageFX: {fileID: 0}
     deactivateFX: {fileID: 0}
   SFX:
-    destroyClip: {fileID: 0}
+    destroyClip: {fileID: 8300000, guid: 29c04ba19da834fb0968146ce5e3a847, type: 3}
+  healthBar: {fileID: 0}

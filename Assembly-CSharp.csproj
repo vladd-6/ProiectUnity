@@ -63,17 +63,16 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Player\PlayerHeadbob.cs" />
     <Compile Include="Assets\Scripts\Drone\DroneController.cs" />
+    <Compile Include="Assets\Scripts\Health\HealthController.cs" />
     <Compile Include="Assets\Scripts\Drone\DroneHealth.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerSlide.cs" />
+    <Compile Include="Assets\Scripts\Health\HealthBarBillboard.cs" />
     <Compile Include="Assets\Scripts\Gun\GunSystem.cs" />
-    <Compile Include="Assets\ImportedAssets\Turret\Scripts\STT_Actor.cs" />
-    <Compile Include="Assets\ImportedAssets\Turret\Scripts\STT_Turret.cs" />
+    <Compile Include="Assets\Scripts\Turret\TurretWeaponController.cs" />
     <Compile Include="Assets\Scripts\Player\States\WallRunState.cs" />
-    <Compile Include="Assets\ImportedAssets\Guns\Scripts\GunView.cs" />
     <Compile Include="Assets\Scripts\Player\States\SlideState.cs" />
     <Compile Include="Assets\Scripts\Player\States\AirborneState.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
-    <Compile Include="Assets\ImportedAssets\Guns\Scripts\GunsMenu.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\Player\States\GroundedState.cs" />
     <Compile Include="Assets\Scripts\Player\States\IMovementState.cs" />

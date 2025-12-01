@@ -149,7 +149,7 @@ public class GunSystem : MonoBehaviour
             Debug.Log("RAZA A LOVIT FIZIC OBIECTUL: " + hit.collider.name);
 
             // hit turret
-            STT_Actor turretHealth = hit.collider.GetComponent<STT_Actor>();
+            HealthController turretHealth = hit.collider.GetComponent<HealthController>();
             if (turretHealth != null)
             {
                 turretHealth.ReceiveDamage(damage, hit.point);
