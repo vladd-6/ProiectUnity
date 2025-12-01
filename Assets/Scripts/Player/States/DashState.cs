@@ -19,19 +19,8 @@ public class DashState : IMovementState
         // Store previous velocity to preserve it
         _previousVelocity = player.PlayerVelocity;
         
-        // Determine dash direction based on input, or forward if no input
-        Vector3 inputDirection = (player.transform.forward * player.VerticalInput + 
-                                  player.transform.right * player.HorizontalInput).normalized;
-        
-        if (inputDirection.magnitude < 0.1f)
-        {
-            // No input, dash forward
-            _dashDirection = player.transform.forward;
-        }
-        else
-        {
-            _dashDirection = inputDirection;
-        }
+        // Always dash in the camera's forward direction
+        _dashDirection = player.playerCamera.transform.forward;
         
         _dashTimer = 0f;
         
