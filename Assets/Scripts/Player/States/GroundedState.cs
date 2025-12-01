@@ -9,6 +9,7 @@ public class GroundedState : IMovementState
     private Vector3 _initialHorizontalVelocity;
     private float _momentumDecayTime = 0.3f;
     private float _momentumTimer = 0f;
+    private bool isClimbing = false;
     
     public void OnEnter(PlayerController player)
     {
@@ -31,6 +32,7 @@ public class GroundedState : IMovementState
         {
             _preserveMomentum = false;
         }
+        isClimbing = false;
     }
 
     public void OnExit(PlayerController player)
@@ -48,6 +50,11 @@ public class GroundedState : IMovementState
         if (Input.GetKeyDown(KeyCode.Space))
         {
             player.PlayerVelocity = new Vector3(player.PlayerVelocity.x, player.JumpForce, player.PlayerVelocity.z);
+            if (player.LedgeDetector.detectLedge(player.transform))
+            {
+                isClimbing = true;
+            }
+
         }
 
         _slideTriggered = Input.GetKeyDown(KeyCode.LeftControl);
@@ -96,6 +103,10 @@ public class GroundedState : IMovementState
             return new AirborneState();
         if (SlideRequired(player)) {
             return new SlideState();
+        }
+        if (isClimbing)
+        {
+            return new LedgeHangState();
         }
         return null;
     }

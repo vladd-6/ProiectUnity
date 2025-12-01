@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     private Headbob headbob;
     private PlayerSlide slide;
     private DashEffects dashEffects;
+    private LedgeDetector ledgeDetector;
     public LayerMask ground;
 
     private bool isGrounded;
@@ -50,6 +51,7 @@ public class PlayerController : MonoBehaviour
     // Expose needed values to states
     public CharacterController Controller => controller;
     public Wallrun WallRun => wallRun;
+    public LedgeDetector LedgeDetector => ledgeDetector;
     public Vector3 PlayerVelocity { get => playerVelocity; set => playerVelocity = value; }
     public bool IsSprinting { get => isSprinting; set => isSprinting = value; }
     public float HorizontalInput => horizontalInput;
@@ -76,6 +78,7 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         wallRun = GetComponent<Wallrun>();
         headbob = GetComponent<Headbob>();
+        ledgeDetector = GetComponent<LedgeDetector>();
         dashEffects = GetComponent<DashEffects>();
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -122,7 +125,8 @@ public class PlayerController : MonoBehaviour
         wallRun.UpdateWallRun(isGrounded, ref currentCameraTilt);
 
         // Apply movement via controller
-        controller.Move(playerVelocity * Time.deltaTime);
+        if (controller.enabled)
+            controller.Move(playerVelocity * Time.deltaTime);
     }
 
     void HandleHeadbob()
