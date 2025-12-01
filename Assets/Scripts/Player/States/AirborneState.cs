@@ -105,6 +105,10 @@ public class AirborneState : IMovementState
                 return new GroundedState();
             else
                 return new SlideState();
+        if (player.LedgeDetector.detectLedge(player.transform))
+        {
+            return new LedgeHangState();
+        }
         return null;
     }
 }
