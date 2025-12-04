@@ -45,7 +45,7 @@ public class DroneWeapon : MonoBehaviour
     {
         // find player
         GameObject p = GameObject.FindGameObjectWithTag("Player");
-        if (p != null) 
+        if (p != null)
             playerTarget = p.transform;
 
         // link drone controller
@@ -54,14 +54,14 @@ public class DroneWeapon : MonoBehaviour
 
     private void Update()
     {
-        if (VFX.muzzle == null || droneBrain == null || playerTarget == null) 
+        if (VFX.muzzle == null || droneBrain == null || playerTarget == null)
             return;
 
         // drone shoots only if in fov (managed in drone controller)
         if (droneBrain.isPlayerVisible)
         {
             // point drone at player
-            VFX.muzzle.LookAt(playerTarget.position + Vector3.up * 1.5f);
+            VFX.muzzle.LookAt(playerTarget.position + Vector3.up);
 
             // manage cooldown
             fireTimer -= Time.deltaTime;
@@ -98,7 +98,7 @@ public class DroneWeapon : MonoBehaviour
 
     private void Shoot()
     {
-        if (SFX.shotClip) 
+        if (SFX.shotClip)
             GetComponent<AudioSource>().PlayOneShot(SFX.shotClip, Random.Range(0.8f, 1.1f));
 
         if (VFX.shotFX != null)

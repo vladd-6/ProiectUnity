@@ -80,7 +80,7 @@ public class HealthController : MonoBehaviour
             parameters.toughness -= damage;
             UpdateHealthUI();
 
-            // add physical knockback
+            // add physical knockback ???
             actor.AddExplosionForce(damage * parameters.damageFactor, position, 0.25f);
 
             // spawn hit particle effect (TODO)

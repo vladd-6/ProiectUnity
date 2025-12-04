@@ -29,6 +29,22 @@ public class DroneController : MonoBehaviour
         // update light angle
         if (viewCone != null)
             viewCone.spotAngle = fieldOfViewAngle;
+
+        // automatically set to target player
+        if (player == null)
+        {
+            // search player tag
+            GameObject foundPlayer = GameObject.FindGameObjectWithTag("Player");
+
+            if (foundPlayer != null)
+            {
+                player = foundPlayer.transform;
+            }
+            else
+            {
+                Debug.LogError("Player not found");
+            }
+        }
     }
 
     void Update()

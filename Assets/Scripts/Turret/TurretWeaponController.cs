@@ -277,32 +277,26 @@ public class TurretWeaponController : MonoBehaviour
     // clean up lists (remove dead/destroyed objects)
     private void ClearTargets()
     {
-
-        if (targeting.target != null)
+        // delete principal target
+        if (targeting.target != null && !targeting.target.enabled)
         {
-            if (targeting.target.GetComponent<Collider>().enabled == false)
+            targeting.targets.Remove(targeting.target);
+        }
+
+        // delete items safely starting at the back
+        for (int i = targeting.targets.Count - 1; i >= 0; i--)
+        {
+            if (targeting.targets[i] == null || !targeting.targets[i].enabled)
             {
-                targeting.targets.Remove(targeting.target);
+                targeting.targets.RemoveAt(i);
             }
         }
 
-        foreach (Collider target in targeting.targets.ToList())
-        {
-
-            if (target == null)
-            {
-                targeting.targets.Remove(target);
-            }
-
-            if (targeting.targets.Count != 0)
-            {
-                targeting.target = targeting.targets.First();
-            }
-            else
-            {
-                targeting.target = null;
-            }
-        }
+        // reassign list
+        if (targeting.targets.Count > 0)
+            targeting.target = targeting.targets[0];
+        else
+            targeting.target = null;
     }
 
     #endregion
