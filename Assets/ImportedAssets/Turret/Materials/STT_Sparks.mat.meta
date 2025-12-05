@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 68a5589e5cf4e4063b676e2033ef22a4
+timeCreated: 1504879854
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 87087
+  packageName: Smart Turret Template
+  packageVersion: 1.0
+  assetPath: Assets/Smart Turret Template/Materials/STT_Sparks.mat
+  uploadId: 484020

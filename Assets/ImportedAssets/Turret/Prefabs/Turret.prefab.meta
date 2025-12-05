@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 2fafc82d17757493ca36f1cfb64b683d
+timeCreated: 1504871200
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 87087
+  packageName: Smart Turret Template
+  packageVersion: 1.0
+  assetPath: Assets/Smart Turret Template/Prefabs/STT_Turret.prefab
+  uploadId: 484020
