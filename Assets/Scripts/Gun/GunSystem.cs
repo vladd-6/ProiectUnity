@@ -90,7 +90,6 @@ public class GunSystem : MonoBehaviour
                 Shoot();
             }
         }
-
         HandleAnimations();
     }
 
@@ -144,9 +143,24 @@ public class GunSystem : MonoBehaviour
         RaycastHit hit;
         int layerMask = ~LayerMask.GetMask("Player");
 
-        if (Physics.Raycast(Camera.transform.position, Camera.transform.forward, out hit, range, layerMask))
+        float bulletRadius = 0.3f; // for debugging
+
+        // spherecast for a thicker bullet (optional)
+        if (Physics.SphereCast(Camera.transform.position, bulletRadius, Camera.transform.forward, out hit, range, layerMask, QueryTriggerInteraction.Ignore))
         {
-            Debug.Log("Am lovit: " + hit.transform.name);
+            // hit turret
+            HealthController turretHealth = hit.collider.GetComponentInParent<HealthController>();
+            if (turretHealth != null)
+            {
+                turretHealth.ReceiveDamage(damage, hit.point);
+            }
+
+            // hit drone
+            DroneHealth droneHealth = hit.collider.GetComponentInParent<DroneHealth>();
+            if (droneHealth != null)
+            {
+                droneHealth.ReceiveDamage(damage, hit.point);
+            }
         }
     }
 
