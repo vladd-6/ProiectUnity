@@ -6,6 +6,15 @@
 
 **Core Vision:** To create a seamless experience where your skill in movement is just as important as your aim, encouraging a dynamic and aggressive playstyle.
 
+## Controls
+* **Move**: W/A/S/D
+* **Sprint**: Shift
+* **Jump**: Space
+* **Slide**: Ctrl
+* **Dash**: Right mouse click
+* **Shoot weapon**: Left mouse click
+* **Reload weapon**: R
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
