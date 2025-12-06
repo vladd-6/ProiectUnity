@@ -7,6 +7,13 @@ public class DashState : IMovementState
     private Vector3 _dashBoost;
     private float _dashTimer = 0f;
     private const float DASH_DURATION = 0.25f;
+
+    private bool _doubleJumpUsed;
+
+    public DashState(bool doubleJumpUsed)
+    {
+        _doubleJumpUsed = doubleJumpUsed;
+    }
     
     public void OnEnter(PlayerController player)
     {
@@ -79,7 +86,7 @@ public class DashState : IMovementState
             if (player.Controller.isGrounded)
                 return new GroundedState();
             else
-                return new AirborneState();
+                return new AirborneState(_doubleJumpUsed);
         }
         
         // Can transition to wall run during dash
