@@ -10,6 +10,11 @@ public class AirborneState : IMovementState
     private bool _dashTriggered = false;
     private float _airControl = 5f;
     private bool _doubleJumpUsed = false;
+
+    public AirborneState(bool doubleJumpUsed = false)
+    {
+        _doubleJumpUsed = doubleJumpUsed;
+    }
     public void OnEnter(PlayerController player)
     {
         _dashTriggered = false;
@@ -97,7 +102,7 @@ public class AirborneState : IMovementState
     public IMovementState TryTransition(PlayerController player)
     {
         if (_dashTriggered)
-            return new DashState();
+            return new DashState(this._doubleJumpUsed);
         if (player.WallRun.IsWallRunning)
             return new WallRunState();
         if (player.Controller.isGrounded)
