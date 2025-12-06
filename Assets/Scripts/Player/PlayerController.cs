@@ -22,6 +22,10 @@ public class PlayerController : MonoBehaviour
     public float dashDelay = 2f;
     public float dashClock = 0f;
 
+    [Header("Airborne to ledge hang transition settings")]
+    public float hangStateTimer = 0f;
+    public float delayTime = 1f;
+
     private CharacterController controller;
     private Wallrun wallRun;
     private Headbob headbob;
@@ -64,6 +68,8 @@ public class PlayerController : MonoBehaviour
     public float DashDelay => dashDelay;
     public float DashClock { get => dashClock; set => dashClock = value; }
     public DashEffects DashEffects => dashEffects;
+    public float DelayTime => delayTime;
+    public float HangStateTimer { get => hangStateTimer; set => hangStateTimer = value; }
     public void SetPendingCameraLerp(float targetY, float duration)
     {
         _hasPendingCameraLerp = true;
@@ -100,6 +106,7 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = controller.isGrounded;
         dashClock -= Time.deltaTime;
+        hangStateTimer -= Time.deltaTime;
 
         // Camera tilt from wallrun helper
         wallRun.HandleCameraTilt(ref currentCameraTilt);

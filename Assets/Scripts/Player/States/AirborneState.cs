@@ -105,8 +105,9 @@ public class AirborneState : IMovementState
                 return new GroundedState();
             else
                 return new SlideState();
-        if (player.LedgeDetector.detectLedge(player.transform))
+        if (player.LedgeDetector.detectLedge(player.transform) && player.HangStateTimer<=0f)
         {
+            player.hangStateTimer = player.DelayTime;
             return new LedgeHangState();
         }
         return null;

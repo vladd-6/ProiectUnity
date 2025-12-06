@@ -2,8 +2,17 @@ using UnityEngine;
 
 public class LedgeHangState : IMovementState
 {
+    private float transitionTime = 0.4f;
+    private float initialCameraY;
+    private float finalCameraY;
+    private float cameraDownOffset = -0.35f;
+
+
     public void OnEnter(PlayerController player)
     {
+        initialCameraY = player.playerCamera.transform.localPosition.y;
+        finalCameraY = initialCameraY + cameraDownOffset;
+        player.SetPendingCameraLerp(finalCameraY, transitionTime);
         player.Controller.enabled = false;
         player.PlayerVelocity = Vector3.zero;
 
@@ -24,16 +33,19 @@ public class LedgeHangState : IMovementState
 
     public void Tick(PlayerController player)
     {
-
+        
     }
 
     public IMovementState TryTransition(PlayerController player)
     {
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKey(KeyCode.W))
             return new LedgeClimbState();
 
         if (Input.GetKeyDown(KeyCode.S))
+        {
+            player.HangStateTimer = player.DelayTime;
             return new AirborneState(); // drop down
+        }
 
         return null;
     }
