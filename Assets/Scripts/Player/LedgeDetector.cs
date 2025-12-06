@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 
 public class LedgeDetector : MonoBehaviour
@@ -38,5 +38,7 @@ public class LedgeDetector : MonoBehaviour
         return true;
 
     }
+
+
 
 }

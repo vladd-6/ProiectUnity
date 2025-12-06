@@ -40,6 +40,7 @@ public class GroundedState : IMovementState
         player.WallRun.OnGroundedStateChanged(false);
     }
 
+
     public void HandleInput(PlayerController player)
     {
         player.ReadMovementInput();

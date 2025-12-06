@@ -10,6 +10,8 @@ public class AirborneState : IMovementState
     private bool _dashTriggered = false;
     private float _airControl = 5f;
     private bool _doubleJumpUsed = false;
+    private float maxSpeed = 8f;
+
     public void OnEnter(PlayerController player)
     {
         _dashTriggered = false;
@@ -93,6 +95,15 @@ public class AirborneState : IMovementState
             player.PlayerVelocity = new Vector3(player.PlayerVelocity.x, player.PlayerVelocity.y + player.Gravity * Time.deltaTime, player.PlayerVelocity.z);
         }
     }
+    //check max speed
+    public bool checkSpeed(PlayerController player)
+    {
+        Vector3 horizontalVelocity = new Vector3(player.PlayerVelocity.x, 0, player.PlayerVelocity.z);
+        float currentHorizontalSpeed = horizontalVelocity.magnitude;
+        if (currentHorizontalSpeed > maxSpeed)
+            return false;
+        return true;
+    }
 
     public IMovementState TryTransition(PlayerController player)
     {
@@ -105,7 +116,7 @@ public class AirborneState : IMovementState
                 return new GroundedState();
             else
                 return new SlideState();
-        if (player.LedgeDetector.detectLedge(player.transform) && player.HangStateTimer<=0f)
+        if (player.LedgeDetector.detectLedge(player.transform) && player.HangStateTimer<=0f && checkSpeed(player))
         {
             player.hangStateTimer = player.DelayTime;
             return new LedgeHangState();
