@@ -10,7 +10,7 @@ public class AirborneState : IMovementState
     private bool _dashTriggered = false;
     private float _airControl = 5f;
     private bool _doubleJumpUsed = false;
-    private float maxSpeed = 8f;
+    private float maxLedgeClimbSpeed = 12f;
 
     public void OnEnter(PlayerController player)
     {
@@ -96,11 +96,11 @@ public class AirborneState : IMovementState
         }
     }
     //check max speed
-    public bool checkSpeed(PlayerController player)
+    public bool checkLedgeClimbSpeed(PlayerController player)
     {
         Vector3 horizontalVelocity = new Vector3(player.PlayerVelocity.x, 0, player.PlayerVelocity.z);
         float currentHorizontalSpeed = horizontalVelocity.magnitude;
-        if (currentHorizontalSpeed > maxSpeed)
+        if (currentHorizontalSpeed > maxLedgeClimbSpeed)
             return false;
         return true;
     }
@@ -116,7 +116,7 @@ public class AirborneState : IMovementState
                 return new GroundedState();
             else
                 return new SlideState();
-        if (player.LedgeDetector.detectLedge(player.transform) && player.HangStateTimer<=0f && checkSpeed(player))
+        if (player.LedgeDetector.detectLedge(player.transform) && player.HangStateTimer<=0f && checkLedgeClimbSpeed(player))
         {
             player.hangStateTimer = player.DelayTime;
             return new LedgeHangState();
