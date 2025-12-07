@@ -38,6 +38,7 @@ public class LedgeClimbState : IMovementState
 
     public IMovementState TryTransition(PlayerController player)
     {
+        //timer exceeds climb duration
         if (timer >= climbDuration)
         {
             return new GroundedState();

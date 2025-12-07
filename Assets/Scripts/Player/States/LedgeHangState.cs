@@ -10,9 +10,11 @@ public class LedgeHangState : IMovementState
 
     public void OnEnter(PlayerController player)
     {
+        //do a camera lerp so the snap won't feel too sudden
         initialCameraY = player.playerCamera.transform.localPosition.y;
         finalCameraY = initialCameraY + cameraDownOffset;
         player.SetPendingCameraLerp(finalCameraY, transitionTime);
+
         player.Controller.enabled = false;
         player.PlayerVelocity = Vector3.zero;
 
@@ -38,6 +40,7 @@ public class LedgeHangState : IMovementState
 
     public IMovementState TryTransition(PlayerController player)
     {
+        //climb if w is pressed
         if (Input.GetKey(KeyCode.W))
             return new LedgeClimbState();
 
