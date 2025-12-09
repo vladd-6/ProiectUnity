@@ -22,11 +22,16 @@ public class PlayerController : MonoBehaviour
     public float dashDelay = 2f;
     public float dashClock = 0f;
 
+    [Header("Airborne to ledge hang transition settings")]
+    public float hangStateTimer = 0f;
+    public float delayTime = 1f;
+
     private CharacterController controller;
     private Wallrun wallRun;
     private Headbob headbob;
     private PlayerSlide slide;
     private DashEffects dashEffects;
+    private LedgeDetector ledgeDetector;
     public LayerMask ground;
 
     private bool isGrounded;
@@ -50,6 +55,7 @@ public class PlayerController : MonoBehaviour
     // Expose needed values to states
     public CharacterController Controller => controller;
     public Wallrun WallRun => wallRun;
+    public LedgeDetector LedgeDetector => ledgeDetector;
     public Vector3 PlayerVelocity { get => playerVelocity; set => playerVelocity = value; }
     public bool IsSprinting { get => isSprinting; set => isSprinting = value; }
     public float HorizontalInput => horizontalInput;
@@ -62,6 +68,8 @@ public class PlayerController : MonoBehaviour
     public float DashDelay => dashDelay;
     public float DashClock { get => dashClock; set => dashClock = value; }
     public DashEffects DashEffects => dashEffects;
+    public float DelayTime => delayTime;
+    public float HangStateTimer { get => hangStateTimer; set => hangStateTimer = value; }
     public void SetPendingCameraLerp(float targetY, float duration)
     {
         _hasPendingCameraLerp = true;
@@ -76,6 +84,7 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         wallRun = GetComponent<Wallrun>();
         headbob = GetComponent<Headbob>();
+        ledgeDetector = GetComponent<LedgeDetector>();
         dashEffects = GetComponent<DashEffects>();
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -97,6 +106,7 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = controller.isGrounded;
         dashClock -= Time.deltaTime;
+        hangStateTimer -= Time.deltaTime;
 
         // Camera tilt from wallrun helper
         wallRun.HandleCameraTilt(ref currentCameraTilt);
@@ -122,7 +132,8 @@ public class PlayerController : MonoBehaviour
         wallRun.UpdateWallRun(isGrounded, ref currentCameraTilt);
 
         // Apply movement via controller
-        controller.Move(playerVelocity * Time.deltaTime);
+        if (controller.enabled)
+            controller.Move(playerVelocity * Time.deltaTime);
     }
 
     void HandleHeadbob()
