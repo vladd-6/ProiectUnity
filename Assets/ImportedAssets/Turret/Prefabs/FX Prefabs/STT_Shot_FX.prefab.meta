@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 7db58c0e931b44d52826ad1829194c32
+timeCreated: 1504920456
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 87087
+  packageName: Smart Turret Template
+  packageVersion: 1.0
+  assetPath: Assets/Smart Turret Template/Prefabs/FX Prefabs/STT_Shot_FX.prefab
+  uploadId: 484020

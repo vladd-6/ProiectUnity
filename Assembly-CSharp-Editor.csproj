@@ -48,7 +48,8 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.2.7f2\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\TutorialInfo\Scripts\Editor\ReadmeEditor.cs" />
+    <Compile Include="Assets\UnityTechnologies\ParticlePack\Shared\Ramps\Editor\RampAssetEditor.cs" />
+    <Compile Include="Assets\UnityTechnologies\ParticlePack\TutorialInfo\Scripts\Editor\ReadmeEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Library\PackageCache\com.unity.collab-proxy@1e5e48aff19d\Lib\Editor\Localization\commontypes.ko.txt" />

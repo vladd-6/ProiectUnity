@@ -97,7 +97,7 @@ public class GroundedState : IMovementState
     public IMovementState TryTransition(PlayerController player)
     {
         if (_dashTriggered)
-            return new DashState();
+            return new DashState(false);
         if (player.WallRun.IsWallRunning)
             return new WallRunState();
         if (!player.Controller.isGrounded)
