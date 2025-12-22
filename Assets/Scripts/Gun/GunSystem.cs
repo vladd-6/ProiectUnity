@@ -5,170 +5,142 @@ using System.Collections;
 
 public class GunSystem : MonoBehaviour
 {
-    // pistol + ammo stats, TODO: read them from a file for a specific gun
-    [Header("Gun Stats")]
-    public int damage = 10;
-    public float range = 50f;
-    public float fireRate = 0.25f;
+    public Transform weaponHolderParent; // where the weapon is placed
 
-    [Header("Ammo Settings")]
-    public int maxAmmo = 12;
-    public int magazines = 5;
-    public float reloadTime = 1.5f;
+    private WeaponRuntime activeWeapon; // current weapon
+    private Transform currentWeaponModel;
+    private ParticleSystem muzzleFlashParticles;
 
-    // variables for ammo logic
-    private int currentAmmo;
-    private int currentMagazines;
-    private bool isReloading = false;
-
-    // parameters for recoil
-    [Header("Recoil Settings")]
-    [SerializeField] private Transform weaponModel;
-    [SerializeField] private float recoilForce = 10f;
-    [SerializeField] private float snappiness = 15f;
-    [SerializeField] private float returnSpeed = 10f;
-
-    private Vector3 reloadRotation = new Vector3(30f, 0f, 0f); // gun rotation at reload
-    private Vector3 reloadPosition = new Vector3(0f, -0.2f, 0f); // gun translation at reload
-    private float reloadAnimSpeed = 5f; 
-
-    [Header("References")]
-    [SerializeField] private Camera Camera;
-    [SerializeField] private ParticleSystem muzzleFlashParticles;
-
-    [Header("UI References")]
+    // UI
+    [SerializeField] private Camera fpsCamera;
     [SerializeField] private TextMeshProUGUI ammoText;
     [SerializeField] private Slider ammoSlider;
 
+    // vars for shooting logic
+    private bool isReloading = false;
     private float nextTimeToFire = 0f;
 
-    // gun initial position (for shooting animation)
+    // recoil and animations
+    private Vector3 currentRecoilRotation;
+    private Vector3 targetRecoilRotation;
     private Vector3 initialPosition;
     private Quaternion initialRotation;
+    private Vector3 reloadRotation = new Vector3(30f, 0f, 0f);
+    private Vector3 reloadPosition = new Vector3(0f, -0.2f, 0f);
+    private float reloadAnimSpeed = 5f;
 
-    private Vector3 currentRecoilRotation; 
-    private Vector3 targetRecoilRotation; 
-
-    void Start()
+    public void Equip(WeaponRuntime runtime)
     {
-        currentAmmo = maxAmmo;
-        currentMagazines = magazines;
+        activeWeapon = runtime; // saved number of bullets
 
+        // clear current weapon
+        if (weaponHolderParent.childCount > 0)
+        {
+            foreach (Transform child in weaponHolderParent) Destroy(child.gameObject);
+        }
+
+        // draw picked weapon
+        if (activeWeapon.stats.weaponPrefab != null)
+        {
+            GameObject newGun = Instantiate(activeWeapon.stats.weaponPrefab, weaponHolderParent);
+            currentWeaponModel = newGun.transform;
+            currentWeaponModel.localPosition = Vector3.zero;
+            currentWeaponModel.localRotation = Quaternion.identity;
+
+            initialPosition = currentWeaponModel.localPosition;
+            initialRotation = currentWeaponModel.localRotation;
+
+            muzzleFlashParticles = newGun.GetComponentInChildren<ParticleSystem>();
+        }
+
+        // UI
+        isReloading = false;
         if (ammoSlider != null)
         {
-            ammoSlider.maxValue = maxAmmo;
-            ammoSlider.value = currentAmmo;
+            ammoSlider.maxValue = activeWeapon.stats.maxAmmo;
         }
-        UpdateAmmoUI();
-
-        // set initial gun position
-        if (weaponModel != null)
-        {
-            initialPosition = weaponModel.localPosition;
-            initialRotation = weaponModel.localRotation;
-        }
-    }
-
-    void OnEnable()
-    {
-        isReloading = false;
         UpdateAmmoUI();
     }
 
     void Update()
     {
-        // process input if not reloading
-        if (!isReloading)
-        {
-            if (Input.GetKeyDown(KeyCode.R) && currentAmmo < maxAmmo && currentMagazines > 0)
-            {
-                StartCoroutine(Reload());
-            }
-            else if (Input.GetMouseButtonDown(0) && Time.time >= nextTimeToFire && currentAmmo > 0)
-            {
-                nextTimeToFire = Time.time + fireRate;
-                Shoot();
-            }
-        }
+        if (activeWeapon == null) return;
+
         HandleAnimations();
+
+        if (isReloading) return;
+
+        // auto / single
+        bool triggerPulled = activeWeapon.stats.fullAuto ? Input.GetMouseButton(0) : Input.GetMouseButtonDown(0);
+
+        // can reload only if current magazine not full and enough magazines remaining
+        if (Input.GetKeyDown(KeyCode.R) && activeWeapon.currentAmmo < activeWeapon.stats.maxAmmo && activeWeapon.currentMagazines > 0)
+        {
+            StartCoroutine(Reload());
+        }
+        else if (triggerPulled && Time.time >= nextTimeToFire && activeWeapon.currentAmmo > 0)
+        {
+            nextTimeToFire = Time.time + activeWeapon.stats.fireRate;
+            Shoot();
+        }
     }
 
-    void HandleAnimations()
+    void Shoot()
     {
-        if (weaponModel == null) 
-            return;
+        // update ammo count
+        activeWeapon.currentAmmo--;
+        UpdateAmmoUI();
 
-        // compute recoil
-        targetRecoilRotation = Vector3.Lerp(targetRecoilRotation, Vector3.zero, returnSpeed * Time.deltaTime);
-        currentRecoilRotation = Vector3.Slerp(currentRecoilRotation, targetRecoilRotation, snappiness * Time.deltaTime);
+        // add recoil
+        targetRecoilRotation += new Vector3(activeWeapon.stats.recoilForce, 0, 0);
 
-        // compute final rotation and position (depending on reloading state)
-        Vector3 finalPositionTarget = isReloading ? initialPosition : initialPosition + reloadPosition;
-        Quaternion finalRotationTarget = isReloading ? initialRotation * Quaternion.Euler(reloadRotation) : initialRotation * Quaternion.Euler(-currentRecoilRotation.x, 0, 0);
+        if (muzzleFlashParticles != null) { muzzleFlashParticles.Stop(); muzzleFlashParticles.Play(); }
 
-        // apply smooth transition (lerp) from current position to target position
-        weaponModel.localPosition = Vector3.Lerp(weaponModel.localPosition, finalPositionTarget, reloadAnimSpeed * Time.deltaTime);
-        weaponModel.localRotation = Quaternion.Slerp(weaponModel.localRotation, finalRotationTarget, reloadAnimSpeed * Time.deltaTime);
+        // Raycast
+        RaycastHit hit;
+        int layerMask = ~LayerMask.GetMask("Player");
+
+        if (Physics.SphereCast(fpsCamera.transform.position, 0.1f, fpsCamera.transform.forward, out hit, activeWeapon.stats.range, layerMask))
+        {
+            HealthController turretHealth = hit.collider.GetComponentInParent<HealthController>();
+            if (turretHealth != null) turretHealth.ReceiveDamage(activeWeapon.stats.damage, hit.point);
+
+            DroneHealth droneHealth = hit.collider.GetComponentInParent<DroneHealth>();
+            if (droneHealth != null) droneHealth.ReceiveDamage(activeWeapon.stats.damage, hit.point);
+        }
     }
 
     IEnumerator Reload()
     {
         isReloading = true;
+        yield return new WaitForSeconds(activeWeapon.stats.reloadTime);
 
-        // wait for gun to reload
-        yield return new WaitForSeconds(reloadTime);
+        activeWeapon.currentAmmo = activeWeapon.stats.maxAmmo;
+        activeWeapon.currentMagazines--;
 
-        currentAmmo = maxAmmo;
-        currentMagazines--;
-        isReloading = false; // finish reloading cycle
-
+        isReloading = false;
         UpdateAmmoUI();
     }
 
-    void Shoot()
+    void HandleAnimations()
     {
-        currentAmmo--;
-        UpdateAmmoUI();
+        if (currentWeaponModel == null) return;
 
-        // add recoil
-        targetRecoilRotation += new Vector3(recoilForce, 0, 0);
+        targetRecoilRotation = Vector3.Lerp(targetRecoilRotation, Vector3.zero, activeWeapon.stats.returnSpeed * Time.deltaTime);
+        currentRecoilRotation = Vector3.Slerp(currentRecoilRotation, targetRecoilRotation, activeWeapon.stats.snappiness * Time.deltaTime);
 
-        // trigger muzzle flash
-        if (muzzleFlashParticles != null)
-        {
-            muzzleFlashParticles.Stop();
-            muzzleFlashParticles.Play();
-        }
+        Vector3 finalPos = isReloading ? initialPosition + reloadPosition : initialPosition;
+        Quaternion recoilRot = Quaternion.Euler(-currentRecoilRotation.x, 0, 0);
+        Quaternion finalRot = isReloading ? initialRotation * Quaternion.Euler(reloadRotation) : initialRotation * recoilRot;
 
-        RaycastHit hit;
-        int layerMask = ~LayerMask.GetMask("Player");
-
-        float bulletRadius = 0.3f; // for debugging
-
-        // spherecast for a thicker bullet (optional)
-        if (Physics.SphereCast(Camera.transform.position, bulletRadius, Camera.transform.forward, out hit, range, layerMask, QueryTriggerInteraction.Ignore))
-        {
-            // hit turret
-            HealthController turretHealth = hit.collider.GetComponentInParent<HealthController>();
-            if (turretHealth != null)
-            {
-                turretHealth.ReceiveDamage(damage, hit.point);
-            }
-
-            // hit drone
-            DroneHealth droneHealth = hit.collider.GetComponentInParent<DroneHealth>();
-            if (droneHealth != null)
-            {
-                droneHealth.ReceiveDamage(damage, hit.point);
-            }
-        }
+        currentWeaponModel.localPosition = Vector3.Lerp(currentWeaponModel.localPosition, finalPos, reloadAnimSpeed * Time.deltaTime);
+        currentWeaponModel.localRotation = Quaternion.Slerp(currentWeaponModel.localRotation, finalRot, reloadAnimSpeed * Time.deltaTime);
     }
 
     void UpdateAmmoUI()
     {
-        if (ammoText != null) 
-            ammoText.text = currentAmmo + " / " + currentMagazines;
-        if (ammoSlider != null) 
-            ammoSlider.value = currentAmmo;
+        if (activeWeapon == null) return;
+        if (ammoText != null) ammoText.text = activeWeapon.currentAmmo + " / " + activeWeapon.currentMagazines;
+        if (ammoSlider != null) ammoSlider.value = activeWeapon.currentAmmo;
     }
 }
