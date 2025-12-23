@@ -61,7 +61,18 @@ public class PlayerInventory : MonoBehaviour
             }
         }
 
-        // if full, add over existing weapon (TODO)
+        // drop and swap logic
+        // select old weapon
+        WeaponRuntime oldWeapon = weaponSlots[activeSlotIndex];
+
+        if (oldWeapon != null && oldWeapon.stats.pickupPrefab != null)
+        {
+            // drop the old weapon in front of the player
+            Vector3 dropPosition = transform.position + (transform.forward * 5f);
+            Instantiate(oldWeapon.stats.pickupPrefab, dropPosition, Quaternion.identity);
+        }
+
+        // if full, add over existing weapon
         weaponSlots[activeSlotIndex] = new WeaponRuntime(data);
         EquipSlot(activeSlotIndex);
         return true;

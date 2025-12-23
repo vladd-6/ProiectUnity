@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: PistolData
   m_EditorClassIdentifier: 
   gunName: Pistol
-  icon: {fileID: 21300000, guid: 92e465552a729c641bdfc21a860c47d8, type: 3}
+  icon: {fileID: 21300000, guid: f8f3d07c6291c3243a72ab0a18b74a44, type: 3}
   weaponPrefab: {fileID: 8312676295901581889, guid: afc43884437c97d488406a68c24144e0, type: 3}
+  pickupPrefab: {fileID: 7894857872941746660, guid: 4b9992e88589e45488a27fa02c6a991e, type: 3}
   fullAuto: 0
   damage: 20
   range: 500

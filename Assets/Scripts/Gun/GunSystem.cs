@@ -33,6 +33,9 @@ public class GunSystem : MonoBehaviour
     {
         activeWeapon = runtime; // saved number of bullets
 
+        // reset time to fire from previous gun
+        nextTimeToFire = 0f;
+
         // clear current weapon
         if (weaponHolderParent.childCount > 0)
         {

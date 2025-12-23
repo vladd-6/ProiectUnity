@@ -7,6 +7,7 @@ public class WeaponData : ScriptableObject
     public string gunName;
     public Sprite icon;
     public GameObject weaponPrefab;
+    public GameObject pickupPrefab;
 
     [Header("Shooting")]
     public bool fullAuto;
