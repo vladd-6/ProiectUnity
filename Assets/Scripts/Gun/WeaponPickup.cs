@@ -6,6 +6,19 @@ public class WeaponPickup : MonoBehaviour
     public WeaponData weaponToGive; // weapon stats
     public float rotateSpeed = 50f;
 
+    [HideInInspector]
+    public int savedAmmo = -1; // -1 = new weapon, full ammo
+    [HideInInspector]
+    public int savedMagazines = -1;
+
+    private float pickupActivationTime;
+
+    private void Start()
+    {
+        // set pickup cooldown
+        pickupActivationTime = Time.time + 1.0f;
+    }
+
     void Update()
     {
         // add rotation
@@ -14,9 +27,17 @@ public class WeaponPickup : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // check if cooldown time expired
+        if (Time.time < pickupActivationTime)
+        {
+            return;
+        }
+
         // check if player
         if (other.CompareTag("Player"))
         {
+            if (weaponToGive == null) return;
+
             // find inventory
             PlayerInventory inventory = other.GetComponent<PlayerInventory>();
 
@@ -26,9 +47,7 @@ public class WeaponPickup : MonoBehaviour
             if (inventory != null)
             {
                 // add weapon in inventory
-                bool wasPickedUp = inventory.AddWeapon(weaponToGive);
-
-                if (wasPickedUp)
+                if (inventory.AddWeapon(weaponToGive, savedAmmo, savedMagazines))
                 {
                     Destroy(gameObject);
                 }
