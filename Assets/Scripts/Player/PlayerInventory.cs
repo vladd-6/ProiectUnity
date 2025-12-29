@@ -110,4 +110,19 @@ public class PlayerInventory : MonoBehaviour
     {
         return activeSlotIndex;
     }
+
+    public bool AddAmmoToCurrentWeapon(int magazinesToAdd)
+    {
+        // check if weapon is equipped
+        if (weaponSlots[activeSlotIndex] == null) return false;
+        if (weaponSlots[activeSlotIndex].stats == null) return false;
+
+        // add magazine
+        weaponSlots[activeSlotIndex].currentMagazines += magazinesToAdd;
+
+        // update UI
+        gunSystem.UpdateAmmoUI();
+
+        return true;
+    }
 }

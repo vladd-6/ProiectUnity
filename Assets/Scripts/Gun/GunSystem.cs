@@ -140,7 +140,7 @@ public class GunSystem : MonoBehaviour
         currentWeaponModel.localRotation = Quaternion.Slerp(currentWeaponModel.localRotation, finalRot, reloadAnimSpeed * Time.deltaTime);
     }
 
-    void UpdateAmmoUI()
+    public void UpdateAmmoUI()
     {
         if (activeWeapon == null) return;
         if (ammoText != null) ammoText.text = activeWeapon.currentAmmo + " / " + activeWeapon.currentMagazines;
