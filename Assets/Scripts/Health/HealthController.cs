@@ -157,4 +157,26 @@ public class HealthController : MonoBehaviour
             Destroy(gameObject, 2);
         }
     }
+
+    public bool Heal(float amount)
+    {
+        // check if already full health 
+        if (parameters.toughness >= maxHealth)
+        {
+            return false;
+        }
+
+        // add heath
+        parameters.toughness += amount;
+
+        if (parameters.toughness > maxHealth)
+        {
+            parameters.toughness = maxHealth;
+        }
+
+        // update
+        UpdateHealthUI();
+
+        return true;
+    }
 }

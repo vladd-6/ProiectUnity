@@ -71,6 +71,7 @@
     <Compile Include="Assets\Scripts\Health\HealthBarBillboard.cs" />
     <Compile Include="Assets\Scripts\Gun\GunSystem.cs" />
     <Compile Include="Assets\Scripts\Player\LedgeDetector.cs" />
+    <Compile Include="Assets\Scripts\Health\HealthPickup.cs" />
     <Compile Include="Assets\Scripts\Turret\TurretWeaponController.cs" />
     <Compile Include="Assets\Scripts\Gun\WeaponPickup.cs" />
     <Compile Include="Assets\Scripts\Player\States\LedgeClimbState.cs" />
