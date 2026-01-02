@@ -148,6 +148,7 @@ public class GunSystem : MonoBehaviour
         // spherecast for a thicker bullet (optional)
         if (Physics.SphereCast(Camera.transform.position, bulletRadius, Camera.transform.forward, out hit, range, layerMask, QueryTriggerInteraction.Ignore))
         {
+            Debug.Log(hit.collider);
             // hit turret
             HealthController turretHealth = hit.collider.GetComponentInParent<HealthController>();
             if (turretHealth != null)
@@ -160,6 +161,13 @@ public class GunSystem : MonoBehaviour
             if (droneHealth != null)
             {
                 droneHealth.ReceiveDamage(damage, hit.point);
+            }
+
+            //hit human enemy
+            HealthController enemyHealth = hit.collider.GetComponentInParent<HealthController>();
+            if (enemyHealth != null)
+            {
+                enemyHealth.ReceiveDamage(damage, hit.point);
             }
         }
     }

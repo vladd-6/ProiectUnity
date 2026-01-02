@@ -75,9 +75,11 @@
     <Compile Include="Assets\Scripts\Player\States\WallRunState.cs" />
     <Compile Include="Assets\Scripts\Player\States\SlideState.cs" />
     <Compile Include="Assets\Scripts\Player\States\AirborneState.cs" />
+    <Compile Include="Assets\Scripts\Gun\EnemyGunSystem.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Menu\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\Player\DashEffects.cs" />
+    <Compile Include="Assets\Scripts\NavMeshEnemy\EnemyController.cs" />
     <Compile Include="Assets\RealisticRain\Script\VFXController.cs" />
     <Compile Include="Assets\Scripts\Player\States\GroundedState.cs" />
     <Compile Include="Assets\Scripts\Player\States\DashState.cs" />
