@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 
-public class GunSystem : MonoBehaviour
+public class EnemyGunSystem : MonoBehaviour
 {
     // pistol + ammo stats, TODO: read them from a file for a specific gun
     [Header("Gun Stats")]
@@ -30,15 +30,11 @@ public class GunSystem : MonoBehaviour
 
     private Vector3 reloadRotation = new Vector3(30f, 0f, 0f); // gun rotation at reload
     private Vector3 reloadPosition = new Vector3(0f, -0.2f, 0f); // gun translation at reload
-    private float reloadAnimSpeed = 5f; 
+    private float reloadAnimSpeed = 5f;
 
     [Header("References")]
-    [SerializeField] private Camera Camera;
+    [SerializeField] private Transform fireOrigin; // muzzle or barrel
     [SerializeField] private ParticleSystem muzzleFlashParticles;
-
-    [Header("UI References")]
-    [SerializeField] private TextMeshProUGUI ammoText;
-    [SerializeField] private Slider ammoSlider;
 
     private float nextTimeToFire = 0f;
 
@@ -46,20 +42,15 @@ public class GunSystem : MonoBehaviour
     private Vector3 initialPosition;
     private Quaternion initialRotation;
 
-    private Vector3 currentRecoilRotation; 
-    private Vector3 targetRecoilRotation; 
+    private Vector3 currentRecoilRotation;
+    private Vector3 targetRecoilRotation;
+
+    public Transform FireOrigin => fireOrigin;
 
     void Start()
     {
         currentAmmo = maxAmmo;
         currentMagazines = magazines;
-
-        if (ammoSlider != null)
-        {
-            ammoSlider.maxValue = maxAmmo;
-            ammoSlider.value = currentAmmo;
-        }
-        UpdateAmmoUI();
 
         // set initial gun position
         if (weaponModel != null)
@@ -69,33 +60,58 @@ public class GunSystem : MonoBehaviour
         }
     }
 
-    void OnEnable()
-    {
-        isReloading = false;
-        UpdateAmmoUI();
-    }
-
+    
     void Update()
     {
-        // process input if not reloading
-        if (!isReloading)
+        /*HandleAnimations();*/
+    }
+
+    public bool TryShoot(Vector3 direction)
+    {
+        if (isReloading)
+            return false;
+        if(Time.time < nextTimeToFire)
+            return false;   
+        if(currentAmmo <= 0)
         {
-            if (Input.GetKeyDown(KeyCode.R) && currentAmmo < maxAmmo && currentMagazines > 0)
+            if (currentMagazines > 0)
             {
                 StartCoroutine(Reload());
             }
-            else if (Input.GetMouseButtonDown(0) && Time.time >= nextTimeToFire && currentAmmo > 0)
-            {
-                nextTimeToFire = Time.time + fireRate;
-                Shoot();
-            }
+            return false;
         }
-        HandleAnimations();
+
+        nextTimeToFire = Time.time + fireRate;
+        Shoot(direction);
+        return true;
+    }
+
+    void Shoot(Vector3 direction)
+    {
+        currentAmmo--;
+        // add recoil
+        targetRecoilRotation += new Vector3(recoilForce, 0, 0);
+
+        // trigger muzzle flash
+        if (muzzleFlashParticles != null)
+        {
+            muzzleFlashParticles.Stop();
+            muzzleFlashParticles.Play();
+        }
+
+        RaycastHit hit;
+        if (Physics.Raycast(fireOrigin.position, direction, out hit, range))
+        {
+            HealthController health = hit.collider.GetComponentInParent<HealthController>();
+            if (health != null)
+                health.ReceiveDamage(damage, hit.point);
+        }
+
     }
 
     void HandleAnimations()
     {
-        if (weaponModel == null) 
+        if (weaponModel == null)
             return;
 
         // compute recoil
@@ -121,62 +137,5 @@ public class GunSystem : MonoBehaviour
         currentAmmo = maxAmmo;
         currentMagazines--;
         isReloading = false; // finish reloading cycle
-
-        UpdateAmmoUI();
-    }
-
-    void Shoot()
-    {
-        currentAmmo--;
-        UpdateAmmoUI();
-
-        // add recoil
-        targetRecoilRotation += new Vector3(recoilForce, 0, 0);
-
-        // trigger muzzle flash
-        if (muzzleFlashParticles != null)
-        {
-            muzzleFlashParticles.Stop();
-            muzzleFlashParticles.Play();
-        }
-
-        RaycastHit hit;
-        int layerMask = ~LayerMask.GetMask("Player");
-
-        float bulletRadius = 0.3f; // for debugging
-
-        // spherecast for a thicker bullet (optional)
-        if (Physics.SphereCast(Camera.transform.position, bulletRadius, Camera.transform.forward, out hit, range, layerMask, QueryTriggerInteraction.Ignore))
-        {
-            Debug.Log(hit.collider);
-            // hit turret
-            HealthController turretHealth = hit.collider.GetComponentInParent<HealthController>();
-            if (turretHealth != null)
-            {
-                turretHealth.ReceiveDamage(damage, hit.point);
-            }
-
-            // hit drone
-            DroneHealth droneHealth = hit.collider.GetComponentInParent<DroneHealth>();
-            if (droneHealth != null)
-            {
-                droneHealth.ReceiveDamage(damage, hit.point);
-            }
-
-            //hit human enemy
-            HealthController enemyHealth = hit.collider.GetComponentInParent<HealthController>();
-            if (enemyHealth != null)
-            {
-                enemyHealth.ReceiveDamage(damage, hit.point);
-            }
-        }
-    }
-
-    void UpdateAmmoUI()
-    {
-        if (ammoText != null) 
-            ammoText.text = currentAmmo + " / " + currentMagazines;
-        if (ammoSlider != null) 
-            ammoSlider.value = currentAmmo;
     }
 }
