@@ -113,7 +113,7 @@ public class GunSystem : MonoBehaviour
 
             // hit human enemy
             HealthController enemyHealth = hit.collider.GetComponentInParent<HealthController>();
-            if (enemyHealth != null) enemyHealth.ReceiveDamage(damage, hit.point);
+            if (enemyHealth != null) enemyHealth.ReceiveDamage(activeWeapon.stats.damage, hit.point);
         }
     }
 

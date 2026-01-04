@@ -37,6 +37,7 @@ public class ActorAudio
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(Collider))]
 public class HealthController : MonoBehaviour
 {
 
@@ -120,42 +121,42 @@ public class HealthController : MonoBehaviour
 
     public void Destroy()
     {
-        // if the actor is player
+        // Player death is handled by PlayerDeathHandler script
         if (gameObject.tag == "Player")
         {
-            Debug.Log("GAME OVER! Player died.");
-            // TODO player logic
+            // Just set health to 0, PlayerDeathHandler will detect this
+            parameters.toughness = 0;
+            UpdateHealthUI();
+            return;
         }
-        // if actor is enemy
-        else
+
+        // Enemy death logic
+        // disable physics
+        GetComponent<Collider>().enabled = false;
+
+        // hide all visuals
+        Renderer[] allRenderers = GetComponentsInChildren<Renderer>();
+        foreach (Renderer r in allRenderers)
         {
-            // disable physics
-            GetComponent<Collider>().enabled = false;
-
-            // hide all visuals
-            Renderer[] allRenderers = GetComponentsInChildren<Renderer>();
-            foreach (Renderer r in allRenderers)
-            {
-                r.enabled = false;
-            }
-
-            // stop the Weapon script (prevent shooting while dead)
-            TurretWeaponController turretScript = GetComponent<TurretWeaponController>();
-            if (turretScript != null)
-            {
-                turretScript.enabled = false;
-            }
-
-            // hide the Health Bar
-            if (healthBar != null)
-            {
-                healthBar.gameObject.SetActive(false);
-            }
-
-            // play sound and wait before deleting object
-            GetComponent<AudioSource>().PlayOneShot(SFX.destroyClip);
-            Destroy(gameObject, 2);
+            r.enabled = false;
         }
+
+        // stop the Weapon script (prevent shooting while dead)
+        TurretWeaponController turretScript = GetComponent<TurretWeaponController>();
+        if (turretScript != null)
+        {
+            turretScript.enabled = false;
+        }
+
+        // hide the Health Bar
+        if (healthBar != null)
+        {
+            healthBar.gameObject.SetActive(false);
+        }
+
+        // play sound and wait before deleting object
+        GetComponent<AudioSource>().PlayOneShot(SFX.destroyClip);
+        Destroy(gameObject, 2);
     }
 
     public bool Heal(float amount)
