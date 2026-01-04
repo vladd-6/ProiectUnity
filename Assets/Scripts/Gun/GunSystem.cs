@@ -110,6 +110,10 @@ public class GunSystem : MonoBehaviour
 
             DroneHealth droneHealth = hit.collider.GetComponentInParent<DroneHealth>();
             if (droneHealth != null) droneHealth.ReceiveDamage(activeWeapon.stats.damage, hit.point);
+
+            // hit human enemy
+            HealthController enemyHealth = hit.collider.GetComponentInParent<HealthController>();
+            if (enemyHealth != null) enemyHealth.ReceiveDamage(damage, hit.point);
         }
     }
 
