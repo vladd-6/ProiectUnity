@@ -8,6 +8,10 @@ public class MenuManager : MonoBehaviour
     private GameObject pauseMenu;
 
     // Update is called once per frame
+    void Start()
+    {
+        Time.timeScale = 1;
+    }
     void Update()
     {
         ReadInput();
