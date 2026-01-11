@@ -52,6 +52,7 @@
     <Compile Include="Assets\Scripts\Menu\MainMenu.cs" />
     <Compile Include="Assets\Scripts\Drone\DroneController.cs" />
     <Compile Include="Assets\Scripts\Health\HealthController.cs" />
+    <Compile Include="Assets\Scripts\Platform\MovingPlatform.cs" />
     <Compile Include="Assets\Scripts\Drone\DroneHealth.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerSlide.cs" />
     <Compile Include="Assets\Scripts\Health\HealthBarBillboard.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Assets\Scripts\Player\States\IMovementState.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerWallrun.cs" />
     <Compile Include="Assets\Scripts\Drone\DroneWeapon.cs" />
+    <Compile Include="Assets\TextureScroller.cs" />
     <Compile Include="Assets\Scripts\Player\States\LedgeHangState.cs" />
   </ItemGroup>
   <ItemGroup>

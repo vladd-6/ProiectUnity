@@ -16,7 +16,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &4335230017991486
 Transform:
@@ -58,6 +58,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -93,12 +96,14 @@ GameObject:
   m_Component:
   - component: {fileID: 4557566865129882}
   - component: {fileID: 205463804545437830}
+  - component: {fileID: 4682161711896353888}
+  - component: {fileID: 2813779842053709663}
   m_Layer: 0
-  m_Name: EA03_Fence_SolidBeam_01e_PRE
+  m_Name: MovingPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &4557566865129882
 Transform:
@@ -108,16 +113,16 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1468117348160016}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4811491282695146}
   - {fileID: 4884853048884980}
   - {fileID: 4335230017991486}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!205 &205463804545437830
 LODGroup:
   m_ObjectHideFlags: 0
@@ -145,6 +150,47 @@ LODGroup:
     renderers:
     - renderer: {fileID: 23418152983498152}
   m_Enabled: 1
+--- !u!114 &4682161711896353888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468117348160016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a273d32d7b576f34b9f1e522229ff3f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveOffset: {x: 3, y: 0, z: 0}
+  viteza: 25
+--- !u!54 &2813779842053709663
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468117348160016}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 1
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1947635182140490
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,12 +203,13 @@ GameObject:
   - component: {fileID: 33420021684513306}
   - component: {fileID: 23665547752729496}
   - component: {fileID: 65296812118430222}
+  - component: {fileID: 7571939866101613415}
   m_Layer: 0
   m_Name: EA03_Fence_SolidBeam_01e_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &4811491282695146
 Transform:
@@ -204,6 +251,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -250,6 +300,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6.071192, y: 2.2724771, z: 0.7363122}
   m_Center: {x: -0.18211257, y: 1.1362386, z: -0.03357461}
+--- !u!65 &7571939866101613415
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1947635182140490}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6.071193, y: 2.2477, z: 0.9363124}
+  m_Center: {x: -0.18211262, y: 1.1362386, z: -0.357462}
 --- !u!1 &1973095447641650
 GameObject:
   m_ObjectHideFlags: 0
@@ -266,7 +337,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &4884853048884980
 Transform:
@@ -308,6 +379,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
