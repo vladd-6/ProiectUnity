@@ -26,6 +26,12 @@ public class PlayerController : MonoBehaviour
     public float hangStateTimer = 0f;
     public float delayTime = 1f;
 
+    [Header("Field of View Settings")]
+    public float baseFov = 90f;
+    public float maxFov = 100f;
+    public float fovLerpSpeed = 5f;
+    public float speedForMaxFov = 11f;
+
     private CharacterController controller;
     private Wallrun wallRun;
     private Headbob headbob;
@@ -41,6 +47,8 @@ public class PlayerController : MonoBehaviour
     private float rotationX = 0;
     private float currentCameraTilt = 0f;
     private Vector3 playerVelocity;
+    private float targetFov;
+    private float currentFov;
 
     // State machine
     private IMovementState _state;
@@ -94,6 +102,10 @@ public class PlayerController : MonoBehaviour
         if (playerCamera != null)
         {
             headbob.SetCameraYMidpoint(playerCamera.transform.localPosition.y);
+            // Initialize FoV
+            currentFov = baseFov;
+            targetFov = baseFov;
+            playerCamera.fieldOfView = baseFov;
         }
 
         // Initialize state based on grounded status at start
@@ -127,6 +139,7 @@ public class PlayerController : MonoBehaviour
             HandleHeadbob();
         
         HandlePendingCameraLerp();
+        UpdateFieldOfView();
 
         // Update wall run lifecycle (may stop wall run affecting next frame transition)
         wallRun.UpdateWallRun(isGrounded, ref currentCameraTilt);
@@ -194,5 +207,20 @@ public class PlayerController : MonoBehaviour
         {
             _hasPendingCameraLerp = false;
         }
+    }
+
+    void UpdateFieldOfView()
+    {
+        if (playerCamera == null)
+            return;
+
+        Vector3 horizontalVelocity = new(playerVelocity.x, 0f, playerVelocity.z);
+        float currentSpeed = horizontalVelocity.magnitude;
+
+        float speedRatio = Mathf.Clamp01(currentSpeed / speedForMaxFov);
+        targetFov = Mathf.Lerp(baseFov, maxFov, speedRatio);
+
+        currentFov = Mathf.Lerp(currentFov, targetFov, Time.deltaTime * fovLerpSpeed);
+        playerCamera.fieldOfView = currentFov;
     }
 }

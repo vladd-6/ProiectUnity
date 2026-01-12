@@ -19,10 +19,17 @@ public class HealthPickup : MonoBehaviour
 
             if (healthScript != null)
             {
+<<<<<<< HEAD
                 // if (healthScript.Heal(healAmount))
                 // {
                 //     Destroy(gameObject);
                 // }
+=======
+                if (healthScript.Heal(healAmount))
+                {
+                    Destroy(gameObject);
+                }
+>>>>>>> origin/main
             }
         }
     }

@@ -103,7 +103,7 @@ public class PlayerInventory : MonoBehaviour
         if (weaponSlots[index].stats == null) return;
 
         activeSlotIndex = index;
-        // gunSystem.Equip(weaponSlots[index]);
+        gunSystem.Equip(weaponSlots[index]);
     }
 
     public int GetActiveSlotIndex()
@@ -121,7 +121,7 @@ public class PlayerInventory : MonoBehaviour
         weaponSlots[activeSlotIndex].currentMagazines += magazinesToAdd;
 
         // update UI
-        // gunSystem.UpdateAmmoUI();
+        gunSystem.UpdateAmmoUI();
 
         return true;
     }
