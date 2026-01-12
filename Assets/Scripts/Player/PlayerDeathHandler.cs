@@ -7,7 +7,7 @@ using TMPro;
 public class PlayerDeathHandler : MonoBehaviour
 {
     [Header("Fall Detection")]
-    [SerializeField] private float deathY = -100f;
+    [SerializeField] private float deathY = 102f;
 
     private HealthController healthController;
     private bool isDead = false;
