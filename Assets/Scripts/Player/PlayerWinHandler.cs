@@ -101,6 +101,13 @@ public class PlayerWinHandler : MonoBehaviour
 
         GameObject winScreen = CreateWinScreen();
 
+        // Make sure timer UI stays on top of the win screen
+        GameObject timerUI = GameObject.Find("TimerUI");
+        if (timerUI != null)
+        {
+            timerUI.transform.SetAsLastSibling();
+        }
+
         Image overlayImage = winScreen.GetComponentInChildren<Image>();
         TextMeshProUGUI winText = winScreen.GetComponentInChildren<TextMeshProUGUI>();
         Image buttonImage = winScreen.transform.Find("PlayAgainButton")?.GetComponent<Image>();

@@ -31,6 +31,9 @@ public class TimerUISetup : MonoBehaviour
         containerRect.pivot = new Vector2(0, 1);
         containerRect.anchoredPosition = new Vector2(20, -20);
         containerRect.sizeDelta = new Vector2(300, 100);
+        
+        // Make sure timer is always rendered on top
+        timerContainer.transform.SetAsLastSibling();
 
         // Create current time text
         GameObject timerTextObj = new GameObject("CurrentTime");
