@@ -99,8 +99,8 @@
     <Compile Include="Assets\ImportedAssets\Lights\LEDLightBlocks\Example Scene\Standard Assets\Utility\CameraRefocus.cs" />
     <Compile Include="Assets\ImportedAssets\Lights\LEDLightBlocks\Example Scene\Standard Assets\Utility\FOVKick.cs" />
     <Compile Include="Assets\ImportedAssets\Lights\LEDLightBlocks\Example Scene\Standard Assets\Utility\ParticleSystemDestroyer.cs" />
-    <Compile Include="Assets\Scripts\Player\States\SlideState.cs" />
     <Compile Include="Assets\ImportedAssets\Lights\LEDLightBlocks\Contents\Scripts\LEDNode.cs" />
+    <Compile Include="Assets\Scripts\Player\States\SlideState.cs" />
     <Compile Include="Assets\Scripts\Gun\WeaponRuntime.cs" />
     <Compile Include="Assets\Scripts\Player\States\AirborneState.cs" />
     <Compile Include="Assets\ImportedAssets\Lights\LEDLightBlocks\Example Scene\Standard Assets\CrossPlatformInput\Scripts\Joystick.cs" />

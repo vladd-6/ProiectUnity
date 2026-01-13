@@ -90,28 +90,39 @@ public class GunSystem : MonoBehaviour
 
     void Shoot()
     {
-        // update ammo count
+        // update ammmo count and UI
         activeWeapon.currentAmmo--;
         UpdateAmmoUI();
 
         // add recoil
         targetRecoilRotation += new Vector3(activeWeapon.stats.recoilForce, 0, 0);
 
-        if (muzzleFlashParticles != null) { muzzleFlashParticles.Stop(); muzzleFlashParticles.Play(); }
+        // spawn muzzle flash
+        if (muzzleFlashParticles != null) 
+        { 
+            muzzleFlashParticles.Stop(); 
+            muzzleFlashParticles.Play(); 
+        }
 
-        // Raycast
         RaycastHit hit;
         int layerMask = ~LayerMask.GetMask("Player");
 
-        if (Physics.SphereCast(fpsCamera.transform.position, 0.1f, fpsCamera.transform.forward, out hit, activeWeapon.stats.range, layerMask))
+        // raycast from center of screen
+        if (Physics.SphereCast(fpsCamera.transform.position, 0.1f, fpsCamera.transform.forward, out hit, activeWeapon.stats.range, layerMask, QueryTriggerInteraction.Ignore))
         {
+            // debug info
+            Debug.Log("Am lovit: " + hit.transform.name + " | Parintele Principal: " + hit.transform.root.name);
+
+            // apply damage to hit object if it has HealthController or DroneHealth component
+            // turret
             HealthController turretHealth = hit.collider.GetComponentInParent<HealthController>();
             if (turretHealth != null) turretHealth.ReceiveDamage(activeWeapon.stats.damage, hit.point);
 
+            // drone
             DroneHealth droneHealth = hit.collider.GetComponentInParent<DroneHealth>();
             if (droneHealth != null) droneHealth.ReceiveDamage(activeWeapon.stats.damage, hit.point);
 
-            // hit human enemy
+            // human enemy
             HealthController enemyHealth = hit.collider.GetComponentInParent<HealthController>();
             if (enemyHealth != null) enemyHealth.ReceiveDamage(activeWeapon.stats.damage, hit.point);
         }
