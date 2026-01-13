@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 57e9b60bfc6570a47b5c5b6f109e37fc
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 227804
+  packageName: Airduct BMT
+  packageVersion: 1.07b
+  assetPath: Assets/Airduct BMT/Scripts-BMT/Utilities/BuildingUnit.cs
+  uploadId: 608601

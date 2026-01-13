@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: d2f6c6d261ec30d4788e33a9951a2ef5
+timeCreated: 1560961675
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195651
+  packageName: LED Light Blocks
+  packageVersion: 1.0
+  assetPath: Assets/Tomerinio/LEDLightBlocks/Contents/Materials/M_LEDBlue.mat
+  uploadId: 434194

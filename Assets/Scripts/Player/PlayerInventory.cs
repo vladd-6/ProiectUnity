@@ -52,7 +52,7 @@ public class PlayerInventory : MonoBehaviour
         // find empty spot
         for (int i = 0; i < weaponSlots.Length; i++)
         {
-            if (weaponSlots[i] == null)
+            if (weaponSlots[i] == null || weaponSlots[i].stats == null)
             {   
                 // equip the new gun
                 weaponSlots[i] = new WeaponRuntime(data);

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 0ead7e0a9abbc124cb59ba661251e4f7
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195651
+  packageName: LED Light Blocks
+  packageVersion: 1.0
+  assetPath: Assets/Tomerinio/LEDLightBlocks/Example Scene/Scripts/SwitchMoveCorridor1.cs
+  uploadId: 434194

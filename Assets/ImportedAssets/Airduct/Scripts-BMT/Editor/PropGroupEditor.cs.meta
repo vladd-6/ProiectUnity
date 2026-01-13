@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: cb963534ee20aee49b81bf50166553b5
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 227804
+  packageName: Airduct BMT
+  packageVersion: 1.07b
+  assetPath: Assets/Airduct BMT/Scripts-BMT/Editor/PropGroupEditor.cs
+  uploadId: 608601

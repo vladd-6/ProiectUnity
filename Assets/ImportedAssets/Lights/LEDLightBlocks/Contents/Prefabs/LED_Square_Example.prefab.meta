@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: af5b2da1066423547ab097090fe91b15
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195651
+  packageName: LED Light Blocks
+  packageVersion: 1.0
+  assetPath: Assets/Tomerinio/LEDLightBlocks/Contents/Prefabs/LED_Square_Example.prefab
+  uploadId: 434194

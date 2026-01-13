@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 42898d32c17051641a16a1c4820afd25
+timeCreated: 1434549954
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195651
+  packageName: LED Light Blocks
+  packageVersion: 1.0
+  assetPath: Assets/Tomerinio/LEDLightBlocks/Example Scene/Materials/Dust.mat
+  uploadId: 434194
