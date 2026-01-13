@@ -14067,6 +14067,7 @@ GameObject:
   - component: {fileID: 2051623943}
   - component: {fileID: 2051623946}
   - component: {fileID: 2051623947}
+  - component: {fileID: 2051623948}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -14444,6 +14445,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbba2e89160e19e4a982e82999041be6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWinHandler
+--- !u!114 &2051623948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2051623933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45189ffe60283db489768af88d8d0056, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TimerUISetup
 --- !u!1001 &2069548436
 PrefabInstance:
   m_ObjectHideFlags: 0

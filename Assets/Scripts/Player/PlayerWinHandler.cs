@@ -29,6 +29,23 @@ public class PlayerWinHandler : MonoBehaviour
     {
         if (hasWon) return;
         hasWon = true;
+        
+        // Stop the timer and update best time
+        TimerUISetup timerSetup = FindAnyObjectByType<TimerUISetup>();
+        if (timerSetup != null)
+        {
+            LevelTimer levelTimer = timerSetup.GetLevelTimer();
+            if (levelTimer != null)
+            {
+                levelTimer.StopTimer();
+                bool isNewRecord = levelTimer.UpdateBestTime();
+                if (isNewRecord)
+                {
+                    Debug.Log("New best time!");
+                }
+            }
+        }
+        
         StartCoroutine(PlayerWinSequence());
     }
 
