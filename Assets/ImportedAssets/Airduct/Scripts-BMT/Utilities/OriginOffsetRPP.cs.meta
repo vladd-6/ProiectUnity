@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: bcfc109841995ae45998359d7298a77c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 227804
+  packageName: Airduct BMT
+  packageVersion: 1.07b
+  assetPath: Assets/Airduct BMT/Scripts-BMT/Utilities/OriginOffsetRPP.cs
+  uploadId: 608601

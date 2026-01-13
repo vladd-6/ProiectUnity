@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 252cb733b1a639e448f5f659607a17dc
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195651
+  packageName: LED Light Blocks
+  packageVersion: 1.0
+  assetPath: Assets/Tomerinio/LEDLightBlocks/Example Scene/Scenes/LEDLightBlocks.unity
+  uploadId: 434194

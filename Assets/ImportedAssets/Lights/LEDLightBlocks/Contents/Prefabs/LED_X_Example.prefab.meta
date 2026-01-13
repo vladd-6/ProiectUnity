@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 660e542dbb2b7d2478865c890adcd3af
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 195651
+  packageName: LED Light Blocks
+  packageVersion: 1.0
+  assetPath: Assets/Tomerinio/LEDLightBlocks/Contents/Prefabs/LED_X_Example.prefab
+  uploadId: 434194
