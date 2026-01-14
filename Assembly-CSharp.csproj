@@ -71,6 +71,7 @@
     <Compile Include="Assets\Scripts\Music\BackgroundMusic.cs" />
     <Compile Include="Assets\ImportedAssets\Lights\LEDLightBlocks\Example Scene\Standard Assets\Characters\Scripts\FirstPersonController.cs" />
     <Compile Include="Assets\Scripts\Drone\DroneHealth.cs" />
+    <Compile Include="Assets\Scripts\AudioManager.cs" />
     <Compile Include="Assets\ImportedAssets\Airduct\Scripts-BMT\Utilities\UnityRuntimePreviewGenerator.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerSlide.cs" />
     <Compile Include="Assets\Scripts\Health\HealthBarBillboard.cs" />
