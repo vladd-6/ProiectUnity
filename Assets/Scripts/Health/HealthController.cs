@@ -148,6 +148,18 @@ public class HealthController : MonoBehaviour
             turretScript.enabled = false;
         }
 
+        EnemyController enemyController = GetComponent<EnemyController>();
+        if (enemyController != null)
+        {
+            enemyController.enabled = false;
+        }
+
+        EnemyGunSystem gunSystem = GetComponentInChildren<EnemyGunSystem>();
+        if (gunSystem != null)
+        {
+            gunSystem.enabled = false;
+        }
+
         // hide the Health Bar
         if (healthBar != null)
         {
