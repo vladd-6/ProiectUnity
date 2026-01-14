@@ -44,6 +44,7 @@ public class TimerUISetup : MonoBehaviour
         timerText.fontSize = 32;
         timerText.color = Color.white;
         timerText.alignment = TextAlignmentOptions.TopLeft;
+        timerText.font = Resources.Load<TMP_FontAsset>("Fonts/Orbitron-VariableFont_wght Color");
 
         RectTransform timerRect = timerTextObj.GetComponent<RectTransform>();
         timerRect.anchorMin = new Vector2(0, 1);
@@ -61,6 +62,7 @@ public class TimerUISetup : MonoBehaviour
         bestTimeText.fontSize = 28;
         bestTimeText.color = new Color(1f, 0.84f, 0f); // Gold color
         bestTimeText.alignment = TextAlignmentOptions.TopLeft;
+        bestTimeText.font = Resources.Load<TMP_FontAsset>("Fonts/Orbitron-VariableFont_wght Color");
 
         RectTransform bestTimeRect = bestTimeTextObj.GetComponent<RectTransform>();
         bestTimeRect.anchorMin = new Vector2(0, 1);

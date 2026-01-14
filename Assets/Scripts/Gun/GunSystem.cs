@@ -98,34 +98,42 @@ public class GunSystem : MonoBehaviour
         targetRecoilRotation += new Vector3(activeWeapon.stats.recoilForce, 0, 0);
 
         // spawn muzzle flash
-        if (muzzleFlashParticles != null) 
-        { 
-            muzzleFlashParticles.Stop(); 
-            muzzleFlashParticles.Play(); 
+        if (muzzleFlashParticles != null)
+        {
+            muzzleFlashParticles.Stop();
+            muzzleFlashParticles.Play();
         }
 
         RaycastHit hit;
         int layerMask = ~LayerMask.GetMask("Player");
 
+        // 1. Definim punctul de start si punctul 'default' de final (in caz ca nu lovim nimic)
+        Vector3 startPoint = fpsCamera.transform.position;
+        Vector3 endPoint = startPoint + (fpsCamera.transform.forward * activeWeapon.stats.range);
+
         // raycast from center of screen
         if (Physics.SphereCast(fpsCamera.transform.position, 0.1f, fpsCamera.transform.forward, out hit, activeWeapon.stats.range, layerMask, QueryTriggerInteraction.Ignore))
         {
-            // debug info
+            // 2. Daca am lovit ceva, punctul de final devine punctul de impact
+            endPoint = hit.point;
+
+            // debug info in consola
             Debug.Log("Am lovit: " + hit.transform.name + " | Parintele Principal: " + hit.transform.root.name);
 
-            // apply damage to hit object if it has HealthController or DroneHealth component
-            // turret
+            // apply damage logic...
             HealthController turretHealth = hit.collider.GetComponentInParent<HealthController>();
             if (turretHealth != null) turretHealth.ReceiveDamage(activeWeapon.stats.damage, hit.point);
 
-            // drone
             DroneHealth droneHealth = hit.collider.GetComponentInParent<DroneHealth>();
             if (droneHealth != null) droneHealth.ReceiveDamage(activeWeapon.stats.damage, hit.point);
 
-            // human enemy
             HealthController enemyHealth = hit.collider.GetComponentInParent<HealthController>();
             if (enemyHealth != null) enemyHealth.ReceiveDamage(activeWeapon.stats.damage, hit.point);
         }
+
+        // 3. DESENEAZA LINIA
+        // Parametrii: (Start, Final, Culoare, Durata in secunde)
+        Debug.DrawLine(startPoint, endPoint, Color.red, 2.0f);
     }
 
     IEnumerator Reload()
