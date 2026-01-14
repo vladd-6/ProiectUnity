@@ -211,6 +211,7 @@ public class PlayerDeathHandler : MonoBehaviour
         deathText.fontSize = 60;
         deathText.alignment = TextAlignmentOptions.Center;
         deathText.color = new Color(1f, 1f, 1f, 0f);
+        deathText.font = Resources.Load<TMP_FontAsset>("Fonts/Orbitron-VariableFont_wght Color Black");
 
         RectTransform textRect = textObject.GetComponent<RectTransform>();
         textRect.anchorMin = Vector2.one * 0.5f;
@@ -229,21 +230,21 @@ public class PlayerDeathHandler : MonoBehaviour
         buttonObject.transform.SetParent(deathScreenObject.transform, false);
 
         Image buttonImage = buttonObject.AddComponent<Image>();
-        buttonImage.color = new Color(0.2f, 0.2f, 0.2f, 0f);
+        buttonImage.color = new Color(1f, 1f, 1f, 0f);
 
         Button button = buttonObject.AddComponent<Button>();
         button.targetGraphic = buttonImage;
 
         ColorBlock colors = button.colors;
-        colors.normalColor = new Color(0.2f, 0.2f, 0.2f, 1f);
-        colors.highlightedColor = new Color(0.3f, 0.3f, 0.3f, 1f);
-        colors.pressedColor = new Color(0.15f, 0.15f, 0.15f, 1f);
+        colors.normalColor = new Color(1f, 1f, 1f, 1f);
+        colors.highlightedColor = new Color(0.9f, 0.9f, 0.9f, 1f);
+        colors.pressedColor = new Color(0.8f, 0.8f, 0.8f, 1f);
         button.colors = colors;
 
         RectTransform buttonRect = buttonObject.GetComponent<RectTransform>();
         buttonRect.anchorMin = new Vector2(0.5f, 0.3f);
         buttonRect.anchorMax = new Vector2(0.5f, 0.3f);
-        buttonRect.sizeDelta = new Vector2(200, 60);
+        buttonRect.sizeDelta = new Vector2(300, 60);
         buttonRect.anchoredPosition = Vector2.zero;
 
         GameObject buttonTextObject = new("Text");
@@ -254,6 +255,7 @@ public class PlayerDeathHandler : MonoBehaviour
         buttonText.fontSize = 40;
         buttonText.alignment = TextAlignmentOptions.Center;
         buttonText.color = new Color(1f, 1f, 1f, 0f);
+        buttonText.font = Resources.Load<TMP_FontAsset>("Fonts/Orbitron-VariableFont_wght Color Black");
 
         RectTransform buttonTextRect = buttonTextObject.GetComponent<RectTransform>();
         buttonTextRect.anchorMin = Vector2.zero;
